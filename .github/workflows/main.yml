@@ -39,11 +39,9 @@ jobs:
       # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/execute/usage-examples.md
       - name: Use GitVersion
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.10.2
+        uses: gittools/actions/gitversion/execute@v1.1.1
         with:
           useConfigFile: true
-          updateAssemblyInfo: false
-          updateAssemblyInfoFilename: false
 
       - name: Display SemVer
         run: |
@@ -58,7 +56,7 @@ jobs:
           echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
 
         # https://github.com/actions/setup-dotnet
-      - name: Install net7.0
+      - name: Install net8.0
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "8.0.x"
