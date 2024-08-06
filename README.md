@@ -1,9 +1,8 @@
-
 # Veeqo API Wrapper
 
 ## Overview
 
-This repository contains a Python wrapper for the [Veeqo API](https://developer.veeqo.com/docs). The wrapper simplifies interaction with Veeqo's various endpoints, allowing developers to easily integrate Veeqo functionalities into their applications.
+This repository contains a .NET wrapper for the [Veeqo API](https://developer.veeqo.com/docs). The wrapper simplifies interaction with Veeqo's various endpoints, allowing developers to easily integrate Veeqo functionalities into their applications.
 
 ## Features
 
@@ -14,33 +13,65 @@ This repository contains a Python wrapper for the [Veeqo API](https://developer.
 
 ## Installation
 
-To install the Veeqo API Wrapper, you can use pip:
+To install the Veeqo API Wrapper, you can add the package reference to your project:
 
-```sh
-pip install veeqo-api-wrapper
+```xml
+<PackageReference Include="EasyKeys.Veeqo" Version="1.0.0" />
 ```
 
 ## Usage
 
 Here's a quick example to get you started:
 
-```python
-from veeqo_api_wrapper import VeeqoClient
+```csharp
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using EasyKeys.Veeqo.Orders;
+using EasyKeys.Veeqo.Orders.Models.Parameters;
 
-# Initialize the Veeqo client
-veeqo = VeeqoClient(api_key='YOUR_VEEQO_API_KEY')
+// Configure your services
+var services = new ServiceCollection();
 
-# Get a list of products
-products = veeqo.get_products()
+var dic = new Dictionary<string, string>
+{
+    { "VeeqoClientOptions:BaseUrl", "https://private-anon-4c0cd8afa3-veeqo.apiary-proxy.com/" },
+    { "VeeqoClientOptions:ApiKey" , "your-api-key" },
+};
 
-# Print product details
-for product in products:
-    print(product['name'], product['price'])
+var configBuilder = new ConfigurationBuilder().AddInMemoryCollection(dic);
+var config = configBuilder.Build();
+
+services.AddSingleton<IConfiguration>(config);
+services.AddVeeqoOrdersClient();
+
+var serviceProvider = services.BuildServiceProvider();
+var veeqoOrdersClient = serviceProvider.GetRequiredService<IVeeqoOrdersClient>();
+
+// Define parameters
+var parameters = new GetOrdersParameters
+{
+    Query = "query",
+    Status = "status",
+    Updated_At_Min = DateTime.Now.AddMonths(-1),
+    Since_Id = 100,
+    Created_At_Min = DateTime.Now.AddMonths(-6),
+    Page = 1,
+    Page_Size = 50,
+    Tags = "tag1,tag2",
+    Allocated_At = 5,
+};
+
+// List orders
+var orders = await veeqoOrdersClient.ListOrdersAsync(parameters);
+foreach (var order in orders.Result)
+{
+    Console.WriteLine(order.Number);
+}
 ```
 
 ## Authentication
 
-To use the Veeqo API, you need to obtain an API key from your Veeqo account. Once you have the key, initialize the `VeeqoClient` with your API key as shown in the example above.
+To use the Veeqo API, you need to obtain an API key from your Veeqo account. Once you have the key, configure the `VeeqoClientOptions` with your API key as shown in the example above.
 
 ## Endpoints
 
@@ -48,27 +79,33 @@ The wrapper supports the following Veeqo endpoints:
 
 ### Products
 
-- `get_products()`: Retrieve a list of products.
-- `get_product(product_id)`: Retrieve a single product by its ID.
-- `create_product(data)`: Create a new product.
-- `update_product(product_id, data)`: Update an existing product.
-- `delete_product(product_id)`: Delete a product by its ID.
+- `GetProductsAsync()`: Retrieve a list of products.
+- `GetProductAsync(productId)`: Retrieve a single product by its ID.
+- `CreateProductAsync(data)`: Create a new product.
+- `UpdateProductAsync(productId, data)`: Update an existing product.
+- `DeleteProductAsync(productId)`: Delete a product by its ID.
 
 ### Orders
 
-- `get_orders()`: Retrieve a list of orders.
-- `get_order(order_id)`: Retrieve a single order by its ID.
-- `create_order(data)`: Create a new order.
-- `update_order(order_id, data)`: Update an existing order.
-- `delete_order(order_id)`: Cancel an order by its ID.
+- `ListOrdersAsync(parameters)`: Retrieve a list of orders.
+- `GetOrderAsync(orderId)`: Retrieve a single order by its ID.
+- `CreateVeeqoOrderAsync(order)`: Create a new order.
+- `UpdateVeeqoOrderAsync(orderId, order)`: Update an existing order.
+- `CreateOrderNotesAsync(orderId, text)`: Create a note for an order.
 
-### Customers
+## Models
 
-- `get_customers()`: Retrieve a list of customers.
-- `get_customer(customer_id)`: Retrieve a single customer by their ID.
-- `create_customer(data)`: Create a new customer.
-- `update_customer(customer_id, data)`: Update an existing customer.
-- `delete_customer(customer_id)`: Delete a customer by their ID.
+### Request Models
+
+Request models are used to structure the data sent to the Veeqo API when creating or updating resources. For example, `RequestOrder` is used when creating or updating an order. These models are located in the `Models/Request` folder.
+
+### Response Models
+
+Response models represent the structure of the data returned by the Veeqo API. For example, `Order` is used to represent the details of an order returned by the API. These models are located in the `Models/Response` folder.
+
+### Parameters Models
+
+Parameter models are used to filter and paginate the results when retrieving data from the API. For example, `GetOrdersParameters` allows you to specify various criteria such as date range, status, and pagination options to refine the results returned by the API. These models are located in the `Models/Parameters` folder.
 
 ## Contributing
 
