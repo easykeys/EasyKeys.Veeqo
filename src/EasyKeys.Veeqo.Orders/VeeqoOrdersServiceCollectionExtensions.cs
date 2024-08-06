@@ -33,11 +33,13 @@ public static class VeeqoOrdersServiceCollectionExtensions
                     UseJitter = true,  // Adds a random factor to the delay
                     MaxRetryAttempts = 4,
                     Delay = TimeSpan.FromSeconds(3),
-                    OnRetry = async (outcome) =>
+                    OnRetry = (outcome) =>
                     {
                         context.ServiceProvider.GetRequiredService<ILoggerFactory>()
                             .CreateLogger(nameof(VeeqoOrdersClient))
                             .LogWarning("Retrying request");
+
+                        return default;
                     }
                 })
                 .AddRateLimiter(new SlidingWindowRateLimiter(new SlidingWindowRateLimiterOptions

@@ -8,33 +8,33 @@ public class Warehouse
     public int Id { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("user_id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object UserId { get; set; }
+    public object? UserId { get; set; }
 
     [JsonPropertyName("address_line_1")]
-    public string AddressLine1 { get; set; }
+    public string? AddressLine1 { get; set; }
 
     [JsonPropertyName("address_line_2")]
-    public string AddressLine2 { get; set; }
+    public string? AddressLine2 { get; set; }
 
     [JsonPropertyName("city")]
-    public string City { get; set; }
+    public string? City { get; set; }
 
     [JsonPropertyName("region")]
-    public string Region { get; set; }
+    public string? Region { get; set; }
 
     [JsonPropertyName("country")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object Country { get; set; }
+    public object? Country { get; set; }
 
     [JsonPropertyName("post_code")]
-    public string PostCode { get; set; }
+    public string? PostCode { get; set; }
 
     [JsonPropertyName("inventory_type_code")]
-    public string InventoryTypeCode { get; set; }
+    public string? InventoryTypeCode { get; set; }
 
     [JsonPropertyName("default_min_reorder")]
     public int DefaultMinReorder { get; set; }
@@ -44,22 +44,22 @@ public class Warehouse
 
     [JsonPropertyName("click_and_collect_days")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object ClickAndCollectDays { get; set; }
+    public object? ClickAndCollectDays { get; set; }
 
     [JsonPropertyName("created_by_id")]
     public int CreatedById { get; set; }
 
     [JsonPropertyName("updated_by_id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object UpdatedById { get; set; }
+    public object? UpdatedById { get; set; }
 
     [JsonPropertyName("deleted_at")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object DeletedAt { get; set; }
+    public object? DeletedAt { get; set; }
 
     [JsonPropertyName("deleted_by_id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object DeletedById { get; set; }
+    public object? DeletedById { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }
@@ -69,9 +69,9 @@ public class Warehouse
 
     [JsonPropertyName("phone")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object Phone { get; set; }
+    public object? Phone { get; set; }
 
     [JsonPropertyName("requested_carrier_account")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public object RequestedCarrierAccount { get; set; }
+    public object? RequestedCarrierAccount { get; set; }
 }

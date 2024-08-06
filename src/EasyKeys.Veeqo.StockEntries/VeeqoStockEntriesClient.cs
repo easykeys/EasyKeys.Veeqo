@@ -27,6 +27,8 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
 
             var inventoryItem = await _client.GetFromJsonAsync<InventoryItem>(endpoint,cancellationToken);
 
+            ArgumentNullException.ThrowIfNull(inventoryItem, nameof(InventoryItem));
+
             return new VeeqoResult<InventoryItem>(success: true, data: inventoryItem);
         }
         catch (Exception ex)
@@ -48,6 +50,8 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
             response.EnsureSuccessStatusCode();
 
             var inventoryItem = await response.Content.ReadFromJsonAsync<InventoryItem>(cancellationToken);
+
+            ArgumentNullException.ThrowIfNull(inventoryItem, nameof(InventoryItem));
 
             return new VeeqoResult<InventoryItem>(success: true, data: inventoryItem);
         }

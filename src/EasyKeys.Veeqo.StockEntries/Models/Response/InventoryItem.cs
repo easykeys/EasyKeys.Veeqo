@@ -18,11 +18,11 @@ public class InventoryItem
     public int AllocatedStockLevel { get; set; }
 
     [JsonPropertyName("warehouse")]
-    public Warehouse Warehouse { get; set; }
+    public Warehouse? Warehouse { get; set; }
 
     [JsonPropertyName("location")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string Location { get; set; }
+    public string? Location { get; set; }
 
     [JsonPropertyName("stock_running_low")]
     public bool StockRunningLow { get; set; }
