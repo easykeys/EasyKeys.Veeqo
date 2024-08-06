@@ -1,11 +1,4 @@
-﻿using EasyKeys.Veeqo.Orders.Models.Parameters;
-using EasyKeys.Veeqo.Orders;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using EasyKeys.Veeqo.Products;
 using EasyKeys.Veeqo.Products.Models.Parameters;
 using EasyKeys.Veeqo.Products.Models.Request;

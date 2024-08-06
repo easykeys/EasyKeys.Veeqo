@@ -5,7 +5,6 @@ using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
-using System.Net.Http.Json;
 using System.Threading.RateLimiting;
 
 namespace EasyKeys.Veeqo.StockEntries;
