@@ -1,15 +1,9 @@
-using EasyKeys.Veeqo.Abstractions.Response;
 using EasyKeys.Veeqo.Orders;
-using EasyKeys.Veeqo.Orders.Models.Parameters;
 using EasyKeys.Veeqo.Orders.Models.Response;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace EasyKeys.Veeqo.UnitTests;
 

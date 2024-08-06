@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.StockEntries.Models.Response;
 
@@ -23,11 +18,11 @@ public class InventoryItem
     public int AllocatedStockLevel { get; set; }
 
     [JsonPropertyName("warehouse")]
-    public Warehouse Warehouse { get; set; }
+    public Warehouse? Warehouse { get; set; }
 
     [JsonPropertyName("location")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string Location { get; set; }
+    public string? Location { get; set; }
 
     [JsonPropertyName("stock_running_low")]
     public bool StockRunningLow { get; set; }

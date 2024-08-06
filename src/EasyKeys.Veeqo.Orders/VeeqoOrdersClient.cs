@@ -26,6 +26,9 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
             result.EnsureSuccessStatusCode();
 
             var response = await result.Content.ReadFromJsonAsync<OrderNote>();
+
+            ArgumentNullException.ThrowIfNull(response, nameof(OrderNote));
+
             return new VeeqoResult<OrderNote>(success: true, data: response);
         }
         catch (Exception ex)
@@ -48,6 +51,8 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             var model = await response.Content.ReadFromJsonAsync<Order>();
 
+            ArgumentNullException.ThrowIfNull(model, nameof(Order));
+
             return new VeeqoResult<Order>(success: true, data: model);
         }
         catch(Exception ex)
@@ -67,6 +72,9 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
         {
             var response = await _client.GetFromJsonAsync<Order>(endpoint, cancellationToken);
 
+
+            ArgumentNullException.ThrowIfNull(response, nameof(Order));
+
             return new VeeqoResult<Order>(success: true, data: response);
         }
         catch(Exception ex)
@@ -82,6 +90,9 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
         try
         {
             var models = await _client.GetFromJsonAsync<List<Order>>(parameters.GetUrl(), cancellationToken);
+
+
+            ArgumentNullException.ThrowIfNull(models, nameof(Order));
 
             return new VeeqoResult<List<Order>>(success: true, data: models);
         }
@@ -104,6 +115,8 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
             response.EnsureSuccessStatusCode();
 
             var model = await response.Content.ReadFromJsonAsync<Order>();
+
+            ArgumentNullException.ThrowIfNull(model, nameof(Order));
 
             return new VeeqoResult<Order>(success: true, data: model);
         }

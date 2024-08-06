@@ -5,7 +5,6 @@ using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
-using System.Net.Http.Json;
 using System.Threading.RateLimiting;
 
 namespace EasyKeys.Veeqo.StockEntries;
@@ -33,11 +32,13 @@ public static class VeeqoStockEntriesServiceCollectionExtensions
                     UseJitter = true,  // Adds a random factor to the delay
                     MaxRetryAttempts = 4,
                     Delay = TimeSpan.FromSeconds(3),
-                    OnRetry = async (outcome) =>
+                    OnRetry = (outcome) =>
                     {
                         context.ServiceProvider.GetRequiredService<ILoggerFactory>()
                             .CreateLogger(nameof(VeeqoStockEntriesClient))
                             .LogWarning("Retrying request");
+
+                        return default;
                     }
                 })
                 .AddRateLimiter(new SlidingWindowRateLimiter(new SlidingWindowRateLimiterOptions

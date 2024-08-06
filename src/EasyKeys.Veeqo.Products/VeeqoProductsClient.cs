@@ -4,6 +4,7 @@ using EasyKeys.Veeqo.Products.Models.Request;
 using EasyKeys.Veeqo.Products.Models.Response;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using System.Reflection;
 
 namespace EasyKeys.Veeqo.Products;
 
@@ -29,6 +30,8 @@ public class VeeqoProductsClient : IVeeqoProductsClient
             response.EnsureSuccessStatusCode();
 
             var model = await response.Content.ReadFromJsonAsync<ResponseProduct>();
+
+            ArgumentNullException.ThrowIfNull(model, nameof(ResponseProduct));
 
             return new VeeqoResult<ResponseProduct>(success: true, data: model);
 
@@ -68,6 +71,9 @@ public class VeeqoProductsClient : IVeeqoProductsClient
         try
         {
             var response = await _client.GetFromJsonAsync<List<ResponseProduct>>(parameters.GetUrl(), cancellationToken);
+
+            ArgumentNullException.ThrowIfNull(response, nameof(List<ResponseProduct>));
+
             return new VeeqoResult<List<ResponseProduct>>(success: true, data: response);
 
         }
@@ -89,6 +95,8 @@ public class VeeqoProductsClient : IVeeqoProductsClient
             response.EnsureSuccessStatusCode();
 
             var updatedProduct = await response.Content.ReadFromJsonAsync<ResponseProduct>();
+
+            ArgumentNullException.ThrowIfNull(updatedProduct, nameof(ResponseProduct));
 
             return new VeeqoResult<ResponseProduct>(success: true, data: updatedProduct);
 

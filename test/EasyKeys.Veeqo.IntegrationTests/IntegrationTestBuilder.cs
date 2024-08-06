@@ -13,8 +13,6 @@ public static class IntegrationTestBuilder
 {
     public static IServiceProvider BuildDiContainer()
     {
-        var env = "Development";//"Development";
-                                //env = "Production";
         var services = new ServiceCollection();
 
         var logFactory = LoggerFactory.Create(builder => builder.AddConsole());
@@ -24,17 +22,6 @@ public static class IntegrationTestBuilder
             .AddJsonFile("appsettings.json", optional: true)
             .AddUserSecrets(Assembly.GetExecutingAssembly())
             .AddEnvironmentVariables();
-
-        //SYSTEM_TASKINSTANCENAME = AzureCLI
-        //var taskName = Environment.GetEnvironmentVariable("SYSTEM_TASKINSTANCEID");
-        //if (string.IsNullOrEmpty(taskName))
-        //{
-        //    configBuilder
-        //        .AddAzureKeyVault(
-        //        new Uri("https://deveksite.vault.azure.net/"),
-        //        new DefaultAzureCredential(true));
-        //}
-
 
 
         var config = configBuilder.Build();
