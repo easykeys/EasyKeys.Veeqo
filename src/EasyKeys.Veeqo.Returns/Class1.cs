@@ -1,1 +1,0 @@
-﻿namespace EasyKeys.Veeqo.Returns;
