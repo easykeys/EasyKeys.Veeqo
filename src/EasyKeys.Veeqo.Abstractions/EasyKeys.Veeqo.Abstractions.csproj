@@ -4,24 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Authors>ucrengineer;easykeys.com</Authors>
-    <Company>easykeys.com</Company>
-    <Description>This repository contains a .NET wrapper for the [Veeqo API](https://developer.veeqo.com/docs). The wrapper simplifies interaction with Veeqo's various endpoints, allowing developers to easily integrate Veeqo functionalities into their applications.</Description>
-    <Copyright>Copyright © EasyKeys.com Inc.</Copyright>
-    <PackageProjectUrl>https://github.com/easykeys/EasyKeys.Veeqo</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/easykeys/EasyKeys.Veeqo</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>DotNetCore, Veeqo, Amazon</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+  <PropertyGroup Label="Nuget Package Settings">
+    <Description>DotNetCore Abstractions of veeqo Library.</Description>
+    <PackageTags>DotNetCore, veeqo Abstractions</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />

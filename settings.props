@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup Label="Basic Settings">
-	<VersionPrefix>4.0.0-preview1</VersionPrefix>
+	<VersionPrefix>1.0.0</VersionPrefix>
 	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	<NoWarn>$(NoWarn);CS1591;NU1605;DS126858;DS137138;SA1010;SA1011</NoWarn>
@@ -15,18 +15,18 @@
 
   <PropertyGroup Label="Ownership Settings">
 	<Company>easykeys.com</Company>
-	<Authors>kdcllc;easykeys.com</Authors>
-	<Copyright>Copyright © EasyKeys.com Inc.</Copyright>
+	<Authors>ucrengineer;easykeys.com</Authors>
+	<Copyright>Copyright ï¿½ EasyKeys.com Inc.</Copyright>
   </PropertyGroup>
 
 
   <PropertyGroup Label="Nuget Package Settings">
-	<PackageProjectUrl>https://github.com/easykeys/EasyKeys.Shipping.FedEx</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/easykeys/EasyKeys.Shipping.FedEx.git</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/easykeys/EasyKeys.Veeqo</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/easykeys/EasyKeys.Veeqo.git</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
-	<PackageLicense>https://github.com/easykeys/EasyKeys.Shipping.FedEx/master/LICENSE</PackageLicense>
+	<PackageLicense>https://github.com/easykeys/EasyKeys.Veeqo/master/LICENSE</PackageLicense>
 	<PackageIcon>icon.png</PackageIcon>
-	<PackageTags>EasyKeys.com, LockSmith, Extensions, Azure, AspNetCore, Shipment, Shipping, FedEx Web Services</PackageTags>
+	<PackageTags>EasyKeys.com,Veeqo, AspNetCore, Shipment, Shipping, Amazon</PackageTags>
 	<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -36,7 +36,6 @@
 	<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 
-	<!-- https://github.com/kdcllc/Bet.AspNetCore/issues/103 -->
 	<DebugType>Embedded</DebugType>
 	<EmbedAllSources>True</EmbedAllSources>
   </PropertyGroup>
