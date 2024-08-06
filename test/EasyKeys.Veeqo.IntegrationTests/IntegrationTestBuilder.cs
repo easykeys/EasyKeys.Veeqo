@@ -1,4 +1,7 @@
+using EasyKeys.Veeqo.BulkTagging;
 using EasyKeys.Veeqo.Orders;
+using EasyKeys.Veeqo.Products;
+using EasyKeys.Veeqo.StockEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,6 +41,9 @@ public static class IntegrationTestBuilder
 
         services.AddSingleton<IConfiguration>(config);
         services.AddVeeqoOrdersClient();
+        services.AddVeeqoProductsClient();
+        services.AddVeeqoStockEntriesClient();
+        services.AddVeeqoBulkTaggingClient();
         return services.BuildServiceProvider();
     }
 

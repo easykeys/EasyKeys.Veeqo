@@ -1,23 +1,22 @@
-﻿using EasyKeys.Veeqo.Abstractions.Options;
-using Microsoft.Extensions.Configuration;
+﻿using EasyKeys.Veeqo.Abstractions;
+using EasyKeys.Veeqo.Abstractions.Options;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Http.Resilience;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Polly;
 using System.Threading.RateLimiting;
-using EasyKeys.Veeqo.Abstractions;
-using Microsoft.Extensions.Logging;
 
-namespace EasyKeys.Veeqo.Orders;
+namespace EasyKeys.Veeqo.Products;
 
-public static class VeeqoOrdersServiceCollectionExtensions
+public static class VeeqoProductsServiceCollectionExtensions
 {
-    public static IServiceCollection AddVeeqoOrdersClient(this IServiceCollection services)
+    public static IServiceCollection AddVeeqoProductsClient(this IServiceCollection services)
     {
         services
             .AddVeeqoOptions()
-            .AddHttpClient<IVeeqoOrdersClient, VeeqoOrdersClient>(
-            nameof(VeeqoOrdersClient),
+            .AddHttpClient<IVeeqoProductsClient, VeeqoProductsClient>(
+            nameof(VeeqoProductsClient),
             (sp, o) =>
             {
                 var options = sp.GetRequiredService<IOptions<VeeqoClientOptions>>().Value;
@@ -25,7 +24,7 @@ public static class VeeqoOrdersServiceCollectionExtensions
                 o.DefaultRequestHeaders.Clear();
                 o.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
             })
-            .AddResilienceHandler(nameof(VeeqoOrdersClient), (resiliencePipeline, context) =>
+            .AddResilienceHandler(nameof(VeeqoProductsClient), (resiliencePipeline, context) =>
             {
                 resiliencePipeline.AddRetry(new HttpRetryStrategyOptions
                 {
@@ -36,7 +35,7 @@ public static class VeeqoOrdersServiceCollectionExtensions
                     OnRetry = async (outcome) =>
                     {
                         context.ServiceProvider.GetRequiredService<ILoggerFactory>()
-                            .CreateLogger(nameof(VeeqoOrdersClient))
+                            .CreateLogger(nameof(VeeqoProductsClient))
                             .LogWarning("Retrying request");
                     }
                 })

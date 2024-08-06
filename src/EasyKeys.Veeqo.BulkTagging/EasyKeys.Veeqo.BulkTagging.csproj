@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup Label="Nuget Package Settings">
+	    <Description>
+		    DotNetCore Implementation of veeqo bulk tagging api endpoint
+	    </Description>
+	    <PackageTags>
+		    DotNetCore, Veeqo, Amazon
+	    </PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EasyKeys.Veeqo.Abstractions\EasyKeys.Veeqo.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

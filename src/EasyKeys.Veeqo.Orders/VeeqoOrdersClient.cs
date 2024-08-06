@@ -19,53 +19,98 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
     public async Task<VeeqoResult<OrderNote>> CreateOrderNotesAsync(int orderId, string text, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders/{orderId}/notes";
-        var result = await _client.PostAsJsonAsync(endpoint, new RequestOrderNote() { Text = text }, cancellationToken);
+        try
+        {
+            var result = await _client.PostAsJsonAsync(endpoint, new RequestOrderNote() { Text = text }, cancellationToken);
 
-        result.EnsureSuccessStatusCode();
+            result.EnsureSuccessStatusCode();
 
-        var response = await result.Content.ReadFromJsonAsync<OrderNote>();
-        return new VeeqoResult<OrderNote>(success: true,data: response);
+            var response = await result.Content.ReadFromJsonAsync<OrderNote>();
+            return new VeeqoResult<OrderNote>(success: true, data: response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(CreateOrderNotesAsync));
+            return new VeeqoResult<OrderNote>(success: false, error: ex.Message);
+        }
+
     }
 
-    public async Task<VeeqoResult<Order>> CreateVeeqoOrderAsync(RequestOrder order, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<Order>> CreateOrderAsync(RequestOrder order, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders";
 
-        var response = await _client.PostAsJsonAsync(endpoint, new { order = order }, cancellationToken);
+        try
+        {
+            var response = await _client.PostAsJsonAsync(endpoint, new { order = order }, cancellationToken);
 
-        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-        var model = await response.Content.ReadFromJsonAsync<Order>();
+            var model = await response.Content.ReadFromJsonAsync<Order>();
 
-        return new VeeqoResult<Order>(success: true, data: model);
+            return new VeeqoResult<Order>(success: true, data: model);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(CreateOrderAsync));
+            return new VeeqoResult<Order>(success: false, error: ex.Message);
+        }
+
+
     }
 
     public async Task<VeeqoResult<Order>> GetOrderAsync(int orderId, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders/{orderId}";
 
-        var response = await _client.GetFromJsonAsync<Order>(endpoint, cancellationToken);
+        try
+        {
+            var response = await _client.GetFromJsonAsync<Order>(endpoint, cancellationToken);
 
-        return new VeeqoResult<Order>(success: true, data: response);
+            return new VeeqoResult<Order>(success: true, data: response);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(GetOrderAsync));
+            return new VeeqoResult<Order>(success: false, error: ex.Message);
+        }
+
     }
 
     public async Task<VeeqoResult<List<Order>>> ListOrdersAsync(GetOrdersParameters parameters, CancellationToken cancellationToken = default)
     {
-        var models = await _client.GetFromJsonAsync<List<Order>>(parameters.GetUrl(), cancellationToken);
+        try
+        {
+            var models = await _client.GetFromJsonAsync<List<Order>>(parameters.GetUrl(), cancellationToken);
 
-        return new VeeqoResult<List<Order>>(success: true, data: models);
+            return new VeeqoResult<List<Order>>(success: true, data: models);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(ListOrdersAsync));
+            return new VeeqoResult<List<Order>>(success: false, error: ex.Message);
+        }
+
     }
 
-    public async Task<VeeqoResult<Order>> UpdateVeeqoOrderAsync(int veeqoOrderId, RequestOrder order, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<Order>> UpdateOrderAsync(int veeqoOrderId, RequestOrder order, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders/{veeqoOrderId}";
 
-        var response = await _client.PutAsJsonAsync(endpoint, new { order = order }, cancellationToken);
+        try
+        {
+            var response = await _client.PutAsJsonAsync(endpoint, new { order = order }, cancellationToken);
 
-        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-        var model = await response.Content.ReadFromJsonAsync<Order>();
+            var model = await response.Content.ReadFromJsonAsync<Order>();
 
-        return new VeeqoResult<Order>(success: true, data: model);
+            return new VeeqoResult<Order>(success: true, data: model);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(UpdateOrderAsync));
+            return new VeeqoResult<Order>(success: false, error: ex.Message);
+        }
     }
 }

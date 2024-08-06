@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -41,6 +41,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.BulkTagging\EasyKeys.Veeqo.BulkTagging.csproj" />
 		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.Orders\EasyKeys.Veeqo.Orders.csproj" />
+		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.Products\EasyKeys.Veeqo.Products.csproj" />
+		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.StockEntries\EasyKeys.Veeqo.StockEntries.csproj" />
 	</ItemGroup>
 </Project>
