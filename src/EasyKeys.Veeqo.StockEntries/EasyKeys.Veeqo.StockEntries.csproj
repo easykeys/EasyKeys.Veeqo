@@ -12,6 +12,8 @@
 		<PackageTags>
 			DotNetCore, Veeqo, Amazon
 		</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+
 	</PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyKeys.Veeqo.Abstractions\EasyKeys.Veeqo.Abstractions.csproj" />
