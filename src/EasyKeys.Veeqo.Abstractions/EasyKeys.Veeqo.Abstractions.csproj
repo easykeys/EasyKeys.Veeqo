@@ -5,6 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup Label="Nuget Package Settings">
+    <Description>DotNetCore Abstractions of veeqo Library.</Description>
+    <PackageTags>DotNetCore, veeqo Abstractions</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />

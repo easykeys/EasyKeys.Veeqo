@@ -12,9 +12,9 @@ public interface IVeeqoOrdersClient
 
     Task<VeeqoResult<Order>> GetOrderAsync(int orderId, CancellationToken cancellationToken = default);
 
-    Task<VeeqoResult<Order>> CreateVeeqoOrderAsync(RequestOrder order, CancellationToken cancellationToken = default);
+    Task<VeeqoResult<Order>> CreateOrderAsync(RequestOrder order, CancellationToken cancellationToken = default);
 
-    Task<VeeqoResult<Order>> UpdateVeeqoOrderAsync(int veeqoOrderId, RequestOrder order, CancellationToken cancellationToken = default);
+    Task<VeeqoResult<Order>> UpdateOrderAsync(int orderId, RequestOrder order, CancellationToken cancellationToken = default);
 
     Task<VeeqoResult<OrderNote>> CreateOrderNotesAsync(
         int orderId,
