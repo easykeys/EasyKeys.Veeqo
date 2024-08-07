@@ -1,5 +1,4 @@
 <Project>
-
     <Import Project="settings.props" />
   
   </Project>

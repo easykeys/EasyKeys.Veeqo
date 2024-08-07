@@ -2,9 +2,9 @@
 
 public class VeeqoClientOptions
 {
-    public required string ApiKey { get; set; }
+    public string ApiKey { get; set; } = string.Empty;
 
-    public required string BaseUrl { get; set; }
+    public string BaseUrl { get; set; } = string.Empty;
 
     public bool IsDevelopment { get; set; } = true;
 }
