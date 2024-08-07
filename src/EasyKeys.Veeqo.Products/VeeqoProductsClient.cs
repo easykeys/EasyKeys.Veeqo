@@ -29,7 +29,7 @@ public class VeeqoProductsClient : IVeeqoProductsClient
 
             response.EnsureSuccessStatusCode();
 
-            var model = await response.Content.ReadFromJsonAsync<ResponseProduct>();
+            var model = await response.Content.ReadFromJsonAsync<ResponseProduct>(cancellationToken: cancellationToken);
 
             ArgumentNullException.ThrowIfNull(model, nameof(ResponseProduct));
 

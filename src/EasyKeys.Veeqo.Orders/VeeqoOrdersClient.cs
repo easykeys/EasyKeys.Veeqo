@@ -25,7 +25,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             result.EnsureSuccessStatusCode();
 
-            var response = await result.Content.ReadFromJsonAsync<OrderNote>();
+            var response = await result.Content.ReadFromJsonAsync<OrderNote>(cancellationToken: cancellationToken);
 
             ArgumentNullException.ThrowIfNull(response, nameof(OrderNote));
 
@@ -49,7 +49,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             response.EnsureSuccessStatusCode();
 
-            var model = await response.Content.ReadFromJsonAsync<Order>();
+            var model = await response.Content.ReadFromJsonAsync<Order>(cancellationToken:cancellationToken);
 
             ArgumentNullException.ThrowIfNull(model, nameof(Order));
 
@@ -114,7 +114,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             response.EnsureSuccessStatusCode();
 
-            var model = await response.Content.ReadFromJsonAsync<Order>();
+            var model = await response.Content.ReadFromJsonAsync<Order>(cancellationToken: cancellationToken);
 
             ArgumentNullException.ThrowIfNull(model, nameof(Order));
 

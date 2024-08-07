@@ -49,7 +49,7 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
 
             response.EnsureSuccessStatusCode();
 
-            var inventoryItem = await response.Content.ReadFromJsonAsync<InventoryItem>(cancellationToken);
+            var inventoryItem = await response.Content.ReadFromJsonAsync<InventoryItem>(cancellationToken:cancellationToken);
 
             ArgumentNullException.ThrowIfNull(inventoryItem, nameof(InventoryItem));
 
