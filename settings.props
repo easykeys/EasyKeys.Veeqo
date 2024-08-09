@@ -2,7 +2,7 @@
 
   <PropertyGroup Label="Basic Settings">
 	<TargetFrameworks>net6;net7;net8</TargetFrameworks>
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.2.1</VersionPrefix>
 	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	<NoWarn>$(NoWarn);CS1591;NU1605;DS126858;DS137138;SA1010;SA1011</NoWarn>
