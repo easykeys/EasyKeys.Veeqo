@@ -126,4 +126,23 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
             return new VeeqoResult<Order>(success: false, error: ex.Message);
         }
     }
+
+    public async Task<VeeqoResult<bool>> CancelOrderAsync(RequestCancelOrder cancelRequest, CancellationToken cancellationToken = default)
+    {
+        var endpoint = $"orders/{cancelRequest.OrderId}/cancel";
+
+        try
+        {
+            var response = await _client.PutAsJsonAsync(endpoint, new { request = cancelRequest }, cancellationToken);
+
+            response.EnsureSuccessStatusCode();
+
+            return new VeeqoResult<bool>(success: true, data: true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(UpdateOrderAsync));
+            return new VeeqoResult<bool>(success: false, error: ex.Message, data: false);
+        }
+    }
 }

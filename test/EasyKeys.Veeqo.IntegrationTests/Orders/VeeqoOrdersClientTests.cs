@@ -15,15 +15,14 @@ public class VeeqoOrdersClientTests
     }
 
 
-    [Theory]
-    [InlineData(1)]
-    public async Task List_Update_Create_AddOrderNote_OnOrdersAsync(int pageSize)
+    [RunnableInDebugOnly]
+    public async Task List_Update_Create_AddOrderNote_OnOrdersAsync()
     {
         // Arrange
         var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
 
         // Act
-        var result = await veeqoOrdersClient.ListOrdersAsync(new GetOrdersParameters() { Page_Size = pageSize});
+        var result = await veeqoOrdersClient.ListOrdersAsync(new GetOrdersParameters() { Page_Size = 1});
 
         // veeqo dev doesnt return a list of orders..
 
@@ -127,6 +126,10 @@ public class VeeqoOrdersClientTests
         var deletedOrder = await veeqoOrdersClient.CreateOrderNotesAsync(1,"test order notes");
 
         Assert.True(deletedOrder.Success);
+
+        var cancelOrder = await veeqoOrdersClient.CancelOrderAsync(new RequestCancelOrder { OrderId = 1, CancelReason = "Just because",SendVeeqoEmail = false });
+
+        Assert.True(cancelOrder.Success);
     }
 
 

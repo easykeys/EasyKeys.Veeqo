@@ -13,7 +13,7 @@ public class VeeqoBulkTaggingClientTests
     }
 
 
-    [Fact]
+    [RunnableInDebugOnly]
     public async Task Tag_Orders_Products_Async()
     {
         var veeqoBulkTaggingClient = sp.GetRequiredService<IVeeqoBulkTaggingClient>();

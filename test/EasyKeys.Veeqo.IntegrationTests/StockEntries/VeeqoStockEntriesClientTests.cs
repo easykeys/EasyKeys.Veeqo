@@ -16,10 +16,12 @@ public class VeeqoStockEntriesClientTests
     }
 
 
-    [Theory]
-    [InlineData(1,2)]
-    public async Task Show_Update_StockEntryAsync(int stockEntryId, int warehouseId)
+    [RunnableInDebugOnly]
+    public async Task Show_Update_StockEntryAsync()
     {
+        var stockEntryId = 1;
+        var warehouseId = 2;
+
         var veeqoStockEntriesClient = sp.GetRequiredService<IVeeqoStockEntriesClient>();
 
         var result = await veeqoStockEntriesClient.ShowStockEntryAsync(stockEntryId, warehouseId);
