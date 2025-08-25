@@ -127,6 +127,10 @@ public class VeeqoOrdersClientTests
         var deletedOrder = await veeqoOrdersClient.CreateOrderNotesAsync(1,"test order notes");
 
         Assert.True(deletedOrder.Success);
+
+        var cancelOrder = await veeqoOrdersClient.CancelOrderAsync(new RequestCancelOrder { OrderId = 1, CancelReason = "Just because",SendVeeqoEmail = false });
+
+        Assert.True(cancelOrder.Success);
     }
 
 

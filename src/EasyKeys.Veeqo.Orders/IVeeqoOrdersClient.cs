@@ -20,4 +20,6 @@ public interface IVeeqoOrdersClient
         int orderId,
         string text,
         CancellationToken cancellationToken = default);
+
+    Task<VeeqoResult<bool>> CancelOrderAsync(RequestCancelOrder cancelRequest, CancellationToken cancellationToken = default);
 }
