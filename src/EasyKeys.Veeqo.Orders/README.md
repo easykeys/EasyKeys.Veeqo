@@ -155,14 +155,6 @@ To use the Veeqo API, you need to obtain an API key from your Veeqo account. Onc
 
 The wrapper supports the following Veeqo endpoints:
 
-### Products
-
-- `GetProductsAsync()`: Retrieve a list of products.
-- `GetProductAsync(productId)`: Retrieve a single product by its ID.
-- `CreateProductAsync(data)`: Create a new product.
-- `UpdateProductAsync(productId, data)`: Update an existing product.
-- `DeleteProductAsync(productId)`: Delete a product by its ID.
-
 ### Orders
 
 - `ListOrdersAsync(parameters)`: Retrieve a list of orders.

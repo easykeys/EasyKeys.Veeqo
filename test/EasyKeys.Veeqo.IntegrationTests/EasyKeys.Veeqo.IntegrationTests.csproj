@@ -43,6 +43,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.BulkTagging\EasyKeys.Veeqo.BulkTagging.csproj" />
+		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.LineItems\EasyKeys.Veeqo.LineItems.csproj" />
 		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.Orders\EasyKeys.Veeqo.Orders.csproj" />
 		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.Products\EasyKeys.Veeqo.Products.csproj" />
 		<ProjectReference Include="..\..\src\EasyKeys.Veeqo.StockEntries\EasyKeys.Veeqo.StockEntries.csproj" />
