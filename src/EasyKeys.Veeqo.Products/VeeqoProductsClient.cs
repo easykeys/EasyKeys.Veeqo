@@ -4,7 +4,6 @@ using EasyKeys.Veeqo.Products.Models.Request;
 using EasyKeys.Veeqo.Products.Models.Response;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-using System.Reflection;
 
 namespace EasyKeys.Veeqo.Products;
 

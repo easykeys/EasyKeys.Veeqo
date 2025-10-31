@@ -12,4 +12,10 @@ public class LineItemSellable
 
     [JsonPropertyName("product")]
     public Product Product { get; set; } = new Product();
+
+    [JsonPropertyName("sellable_title")]
+    public string SellableTitle { get; set; } = string.Empty;
+
+    [JsonPropertyName("product_title")]
+    public string ProductTitle { get; set; } = string.Empty;
 }

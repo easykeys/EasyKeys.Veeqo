@@ -1,19 +1,19 @@
-﻿using EasyKeys.Veeqo.Abstractions.Options;
-using Microsoft.Extensions.Configuration;
+﻿using EasyKeys.Veeqo.Abstractions;
+using EasyKeys.Veeqo.Abstractions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using EasyKeys.Veeqo.Abstractions;
 
-namespace EasyKeys.Veeqo.Orders;
+namespace EasyKeys.Veeqo.LineItems;
 
-public static class VeeqoOrdersServiceCollectionExtensions
+
+public static class VeeqoLineItemsServiceCollectionExtensions
 {
-    public static IServiceCollection AddVeeqoOrdersClient(this IServiceCollection services)
+    public static IServiceCollection AddVeeqoLineItemsClient(this IServiceCollection services)
     {
         services
             .AddVeeqoOptions()
-            .AddHttpClient<IVeeqoOrdersClient, VeeqoOrdersClient>(
-            nameof(VeeqoOrdersClient),
+            .AddHttpClient<IVeeqoLineItemsClient, VeeqoLineItemsClient>(
+            nameof(VeeqoLineItemsClient),
             (sp, o) =>
             {
                 var options = sp.GetRequiredService<IOptions<VeeqoClientOptions>>().Value;
@@ -21,7 +21,7 @@ public static class VeeqoOrdersServiceCollectionExtensions
                 o.DefaultRequestHeaders.Clear();
                 o.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
             })
-            .AddClientResiliencyPipeline(nameof(VeeqoOrdersClient));
+            .AddClientResiliencyPipeline(nameof(VeeqoLineItemsClient));
 
         return services;
     }

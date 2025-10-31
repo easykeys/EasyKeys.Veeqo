@@ -18,14 +18,27 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
         _logger = logger;
     }
 
-    public async Task<VeeqoResult<int>> BulkTagOrdersAsync(int[] orderIds, int[] tagIds, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<int>> BulkTagOrdersAsync(int[] orderIds, int[] tagIds,bool remove = false, CancellationToken cancellationToken = default)
     {
         var endpoint = $"/bulk_tagging";
 
         try
         {
+            HttpResponseMessage response;
 
-           var response = await _client.PostAsJsonAsync(endpoint, new { order_ids = orderIds, tag_ids = tagIds }, cancellationToken);
+            if (remove)
+            {                
+                response = await _client.SendAsync(new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri(_client.BaseAddress!, endpoint),
+                    Content = JsonContent.Create(new { order_ids = orderIds, tag_ids = tagIds })
+                }, cancellationToken);
+            }
+            else
+            {
+                response = await _client.PostAsJsonAsync(endpoint, new { order_ids = orderIds, tag_ids = tagIds }, cancellationToken);
+            }
 
             response.EnsureSuccessStatusCode();
 
@@ -39,15 +52,27 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
         }
     }
 
-    public async Task<VeeqoResult<int>> BulkTagProductsAsync(int[] productIds, int[] tagIds, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<int>> BulkTagProductsAsync(int[] productIds, int[] tagIds,bool remove, CancellationToken cancellationToken = default)
     {
         var endpoint = $"bulk_tagging";
 
         try
         {
-            using var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
+            HttpResponseMessage response;
 
-            var response = await _client.PostAsJsonAsync(endpoint, new { product_ids = productIds, tag_ids = tagIds }, cancellationToken);
+            if(remove)
+            {
+                response = await _client.SendAsync(new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri(_client.BaseAddress!, endpoint),
+                    Content = JsonContent.Create(new { product_ids = productIds, tag_ids = tagIds })
+                }, cancellationToken);
+            }
+            else
+            {
+                response = await _client.PostAsJsonAsync(endpoint, new { product_ids = productIds, tag_ids = tagIds }, cancellationToken);
+            }
 
             response.EnsureSuccessStatusCode();
 

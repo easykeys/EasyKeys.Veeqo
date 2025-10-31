@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyKeys.Veeqo.StockEntries
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyKeys.Veeqo.BulkTagging", "src\EasyKeys.Veeqo.BulkTagging\EasyKeys.Veeqo.BulkTagging.csproj", "{0EF0CF77-7DE8-481D-9CD8-EE64BC1EFCD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyKeys.Veeqo.LineItems", "src\EasyKeys.Veeqo.LineItems\EasyKeys.Veeqo.LineItems.csproj", "{EEAACE32-9531-432C-8DC4-C06B77D33056}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{0EF0CF77-7DE8-481D-9CD8-EE64BC1EFCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EF0CF77-7DE8-481D-9CD8-EE64BC1EFCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EF0CF77-7DE8-481D-9CD8-EE64BC1EFCD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEAACE32-9531-432C-8DC4-C06B77D33056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEAACE32-9531-432C-8DC4-C06B77D33056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEAACE32-9531-432C-8DC4-C06B77D33056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEAACE32-9531-432C-8DC4-C06B77D33056}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{F542C6E8-476F-4C63-A83F-C46B093AF78E} = {0960351A-EBB0-4859-A991-867B1443B003}
 		{C47DF5A2-7812-4C03-BA0F-502C7CED46C1} = {2A55AD38-AD2F-4A25-B1DD-B8679827D83A}
 		{0EF0CF77-7DE8-481D-9CD8-EE64BC1EFCD2} = {2A55AD38-AD2F-4A25-B1DD-B8679827D83A}
+		{EEAACE32-9531-432C-8DC4-C06B77D33056} = {2A55AD38-AD2F-4A25-B1DD-B8679827D83A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7ACD9041-098F-49D4-8D8E-F427E0535840}

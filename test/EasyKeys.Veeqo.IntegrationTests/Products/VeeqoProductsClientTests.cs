@@ -14,15 +14,14 @@ public class VeeqoProductsClientTests
     }
 
 
-    [Theory]
-    [InlineData(1)]
-    public async Task List_Update_Create_Delete_ProductAsync(int pageSize)
+    [RunnableInDebugOnly]
+    public async Task List_Update_Create_Delete_ProductAsync()
     {
         // Arrange
         var veeqoProductsClient = sp.GetRequiredService<IVeeqoProductsClient>();
 
         // Act
-        var result = await veeqoProductsClient.ListProductsAsync(new GetProductsParameters() { Page_Size = pageSize });
+        var result = await veeqoProductsClient.ListProductsAsync(new GetProductsParameters() { Page_Size = 1 });
 
         // Assert
         Assert.True(result.Success);

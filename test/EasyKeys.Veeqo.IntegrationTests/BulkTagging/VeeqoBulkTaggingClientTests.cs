@@ -13,7 +13,7 @@ public class VeeqoBulkTaggingClientTests
     }
 
 
-    [Fact]
+    [RunnableInDebugOnly]
     public async Task Tag_Orders_Products_Async()
     {
         var veeqoBulkTaggingClient = sp.GetRequiredService<IVeeqoBulkTaggingClient>();
@@ -25,6 +25,10 @@ public class VeeqoBulkTaggingClientTests
         var productsTag = await veeqoBulkTaggingClient.BulkTagProductsAsync([1, 2, 3], [1, 3, 4]);
 
         Assert.True(productsTag.Success);
+
+        var removeTags = await veeqoBulkTaggingClient.BulkTagOrdersAsync([1, 2, 3], [1, 3, 4], remove: true);
+
+        Assert.True(removeTags.Success);
 
     }
 
