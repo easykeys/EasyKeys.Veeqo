@@ -26,6 +26,10 @@ public class VeeqoBulkTaggingClientTests
 
         Assert.True(productsTag.Success);
 
+        var removeTags = await veeqoBulkTaggingClient.BulkTagOrdersAsync([1, 2, 3], [1, 3, 4], remove: true);
+
+        Assert.True(removeTags.Success);
+
     }
 
 
