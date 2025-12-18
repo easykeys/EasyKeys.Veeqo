@@ -132,5 +132,12 @@ public class VeeqoOrdersClientTests
         Assert.True(cancelOrder.Success);
     }
 
+    [RunnableInDebugOnly]
+    public async Task GetOrderAsync()
+    {
+        var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
+
+        var order = await veeqoOrdersClient.GetOrderAsync(1287626055);
+    }
 
 }
