@@ -4,7 +4,9 @@ namespace EasyKeys.Veeqo.Orders.Models.Response;
 
 public class Shipment
 {
-  
+    [JsonPropertyName("charges")]
+    public List<Charge> Charges { get; set; } = new List<Charge>();
+
     [JsonPropertyName("service_type")]
     public string? ServiceType { get; set; }
     [JsonPropertyName("service_name")]
