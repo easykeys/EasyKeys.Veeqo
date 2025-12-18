@@ -30,4 +30,7 @@ public class Order
 
     [JsonPropertyName("returns")]
     public List<ReturnedVeeqoOrders> Returns { get; set; } = new List<ReturnedVeeqoOrders>();
+
+    [JsonPropertyName("allocations")]
+    public List<Allocation> Allocations { get; set; } = new List<Allocation>();
 }
