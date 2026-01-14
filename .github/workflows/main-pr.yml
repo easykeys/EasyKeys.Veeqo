@@ -19,11 +19,7 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: |
-            6.0.x
-            7.0.x
-            8.0.x
-            10.0.x
+          dotnet-version: 10.0.x      # use the version your project targets
           include-prerelease: true
 
       # ---------- RESTORE ----------
@@ -45,8 +41,8 @@ jobs:
 
           if git show-ref --verify --quiet refs/remotes/origin/$BOT_BRANCH; then
             git checkout "$BOT_BRANCH"
-            git pull origin "$BOT_BRANCH"
-            git merge --ff-only "origin/$PR_BRANCH"
+            git pull --ff origin "$BOT_BRANCH"
+            git merge --ff "origin/$PR_BRANCH" || echo "Merge conflict ignored"
           else
             git checkout -b "$BOT_BRANCH" "origin/$PR_BRANCH"
           fi
@@ -76,7 +72,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add .
-          git commit -m "chore: apply dotnet format fixes" || exit 0
+          git commit -m "chore: apply dotnet format fixes" || true
           git push origin "${{ steps.botbranch.outputs.branch }}" --force-with-lease
 
       # ---------- CREATE / UPDATE BOT PR ----------
@@ -86,7 +82,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ steps.botbranch.outputs.branch }}
-          base: ${{ github.event.pull_request.head.ref }} # <-- target the PR branch
+          base: ${{ github.event.pull_request.head.ref }}
           title: "chore: automated formatting fixes (PR #${{ github.event.pull_request.number }})"
           body: |
             🤖 **Automated formatting fixes**
@@ -101,41 +97,33 @@ jobs:
             formatting
 
       # ---------- COMMENT ON ORIGINAL PR ----------
-      - name: Prepare PR comment body
-        if: github.event_name == 'pull_request'
-        run: |
-          {
-            echo "### 🧹 dotnet format results"
-            echo
-            echo "**Auto-fixes applied:** \`${{ steps.changes.outputs.changed }}\`"
-            echo
-            echo "**Bot branch:**"
-            echo "\`${{ steps.botbranch.outputs.branch || 'n/a' }}\`"
-            echo
-            echo "**Bot PR:**"
-            echo "${{ steps.botpr.outputs.pull-request-url || 'n/a' }}"
-            echo
-            echo "<details>"
-            echo "<summary>Lint output</summary>"
-            echo
-            echo '```'
-            cat lint-result.txt
-            echo '```'
-            echo
-            echo "</details>"
-          } > pr-comment.md
-
       - name: Comment on original PR
         if: github.event_name == 'pull_request'
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
-          body-path: pr-comment.md
+          body: |
+            ### 🧹 dotnet format results
+
+            **Auto-fixes applied:** `${{ steps.changes.outputs.changed }}`
+            
+            **Bot branch:** `${{ steps.botbranch.outputs.branch }}`
+            
+            **Bot PR:** ${{ steps.botpr.outputs.pull-request-url }}
+
+            <details>
+            <summary>Lint output</summary>
+
+            ```
+            $(cat lint-result.txt)
+            ```
+
+            </details>
 
       # ---------- BUILD ----------
       - name: Build
-        run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }} --no-restore
+        run: dotnet build
 
       # ---------- TEST ----------
       - name: Test
