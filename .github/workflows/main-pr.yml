@@ -19,12 +19,12 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 10.0.x      # use the version your project targets
+          dotnet-version: 8.0.x
           include-prerelease: true
 
       # ---------- RESTORE ----------
       - name: Restore dependencies
-        run: dotnet restore ${{ env.solution }}
+        run: dotnet restore
 
       # ---------- CREATE / UPDATE BOT BRANCH ----------
       - name: Create or update bot fixes branch
@@ -51,7 +51,7 @@ jobs:
       - name: Run dotnet format (apply fixes)
         id: lint
         run: |
-          dotnet format ${{ env.solution }} --severity error > lint-result.txt || true
+          dotnet format --severity error > lint-result.txt || true
           cat lint-result.txt
 
       # ---------- CHECK FOR CHANGES ----------
@@ -66,18 +66,22 @@ jobs:
 
       # ---------- COMMIT & PUSH ----------
       - name: Commit and push lint fixes
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.changed == 'true' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           git add .
           git commit -m "chore: apply dotnet format fixes" || true
+
+          # Ensure the push uses GITHUB_TOKEN
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin "${{ steps.botbranch.outputs.branch }}" --force-with-lease
 
       # ---------- CREATE / UPDATE BOT PR ----------
       - name: Create or update bot PR
         id: botpr
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -95,6 +99,37 @@ jobs:
           labels: |
             automated
             formatting
+          allow-empty: true
+
+      # ---------- PREPARE PR COMMENT ----------
+      - name: Prepare PR comment body
+        if: github.event_name == 'pull_request'
+        run: |
+          {
+            echo "### 🧹 dotnet format results"
+            echo
+            echo "**Auto-fixes applied:** \`${{ steps.changes.outputs.changed }}\`"
+            echo
+            echo "**Bot branch:** \`${{ steps.botbranch.outputs.branch || 'n/a' }}\`"
+            echo
+            echo "**Bot PR:** ${{ steps.botpr.outputs.pull-request-url || 'n/a' }}"
+            echo
+            echo "<details>"
+            echo "<summary>Lint output</summary>"
+            echo
+
+            if [ -f lint-result.txt ]; then
+              echo '```'
+              cat lint-result.txt
+              echo '```'
+            else
+              echo "_No lint output available_"
+            fi
+
+            echo
+            echo "</details>"
+          } > pr-comment.md
+        shell: /usr/bin/bash -e {0}
 
       # ---------- COMMENT ON ORIGINAL PR ----------
       - name: Comment on original PR
@@ -103,27 +138,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ### 🧹 dotnet format results
-
-            **Auto-fixes applied:** `${{ steps.changes.outputs.changed }}`
-            
-            **Bot branch:** `${{ steps.botbranch.outputs.branch }}`
-            
-            **Bot PR:** ${{ steps.botpr.outputs.pull-request-url }}
-
-            <details>
-            <summary>Lint output</summary>
-
-            ```
-            $(cat lint-result.txt)
-            ```
-
-            </details>
+          body-path: pr-comment.md
 
       # ---------- BUILD ----------
       - name: Build
-        run: dotnet build
+        run: dotnet build --no-restore
 
       # ---------- TEST ----------
       - name: Test
