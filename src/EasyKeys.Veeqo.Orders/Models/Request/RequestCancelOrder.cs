@@ -8,7 +8,7 @@ public class RequestCancelOrder
     public int OrderId { get; set; }
 
     [JsonPropertyName("cancel_reason")]
-    public string CancelReason { get; set; }
+    public string CancelReason { get; set; } = "";
 
     [JsonPropertyName("send_veeqo_email")]
     public bool SendVeeqoEmail { get; set; } = false;
