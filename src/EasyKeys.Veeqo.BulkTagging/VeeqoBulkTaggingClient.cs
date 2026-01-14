@@ -18,7 +18,7 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
         _logger = logger;
     }
 
-    public async Task<VeeqoResult<int>> BulkTagOrdersAsync(int[] orderIds, int[] tagIds,bool remove = false, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<int>> BulkTagOrdersAsync(int[] orderIds, int[] tagIds, bool remove = false, CancellationToken cancellationToken = default)
     {
         var endpoint = $"/bulk_tagging";
 
@@ -27,7 +27,7 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
             HttpResponseMessage response;
 
             if (remove)
-            {                
+            {
                 response = await _client.SendAsync(new HttpRequestMessage
                 {
                     Method = HttpMethod.Delete,
@@ -52,7 +52,7 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
         }
     }
 
-    public async Task<VeeqoResult<int>> BulkTagProductsAsync(int[] productIds, int[] tagIds,bool remove, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<int>> BulkTagProductsAsync(int[] productIds, int[] tagIds, bool remove, CancellationToken cancellationToken = default)
     {
         var endpoint = $"bulk_tagging";
 
@@ -60,7 +60,7 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
         {
             HttpResponseMessage response;
 
-            if(remove)
+            if (remove)
             {
                 response = await _client.SendAsync(new HttpRequestMessage
                 {
