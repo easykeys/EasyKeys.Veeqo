@@ -1,4 +1,3 @@
-Got it 👍 — here’s the full updated **README.md** that you can copy-paste directly into your repo:
 
 ````markdown
 # Veeqo API Wrapper

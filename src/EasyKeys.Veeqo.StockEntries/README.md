@@ -26,8 +26,7 @@ Here's a quick example to get you started:
 ```csharp
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using EasyKeys.Veeqo.Orders;
-using EasyKeys.Veeqo.Orders.Models.Parameters;
+using EasyKeys.Veeqo.StockEntries;
 
 // Configure your services
 var services = new ServiceCollection();
@@ -36,6 +35,10 @@ var dic = new Dictionary<string, string>
 {
     { "VeeqoClientOptions:BaseUrl", "https://private-anon-4c0cd8afa3-veeqo.apiary-proxy.com/" },
     { "VeeqoClientOptions:ApiKey" , "your-api-key" },
+
+    // Optional per-client override (used when set; otherwise falls back to VeeqoClientOptions)
+    { "VeeqoStockEntriesClientOptions:BaseUrl", "" },
+    { "VeeqoStockEntriesClientOptions:ApiKey", "" },
 };
 
 var configBuilder = new ConfigurationBuilder().AddInMemoryCollection(dic);
@@ -44,7 +47,8 @@ var config = configBuilder.Build();
 services.AddSingleton<IConfiguration>(config);
 services.AddVeeqoStockEntriesClient();
 
-var veeqoStockEntriesClient = sp.GetRequiredService<IVeeqoStockEntriesClient>();
+var serviceProvider = services.BuildServiceProvider();
+var veeqoStockEntriesClient = serviceProvider.GetRequiredService<IVeeqoStockEntriesClient>();
 
 var result = await veeqoStockEntriesClient.ShowStockEntryAsync(stockEntryId, warehouseId);
 
@@ -60,7 +64,16 @@ var updateResult = await veeqoStockEntriesClient.UpdateStockEntryAsync(stockEntr
 
 ## Authentication
 
-To use the Veeqo API, you need to obtain an API key from your Veeqo account. Once you have the key, configure the `VeeqoClientOptions` with your API key as shown in the example above.
+To use the Veeqo API, you need to obtain an API key from your Veeqo account.
+
+### Options pattern
+
+This client supports the following configuration pattern:
+
+- Base/shared options: `VeeqoClientOptions` (`VeeqoClientOptions:BaseUrl`, `VeeqoClientOptions:ApiKey`)
+- Per-client override options: `VeeqoStockEntriesClientOptions` (`VeeqoStockEntriesClientOptions:BaseUrl`, `VeeqoStockEntriesClientOptions:ApiKey`)
+
+If a per-client option value is missing/empty, the client falls back to the base `VeeqoClientOptions` value.
 
 ## Endpoints
 

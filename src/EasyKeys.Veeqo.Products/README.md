@@ -26,8 +26,8 @@ Here's a quick example to get you started:
 ```csharp
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using EasyKeys.Veeqo.Orders;
-using EasyKeys.Veeqo.Orders.Models.Parameters;
+using EasyKeys.Veeqo.Products;
+using EasyKeys.Veeqo.Products.Models.Parameters;
 
 // Configure your services
 var services = new ServiceCollection();
@@ -36,6 +36,10 @@ var dic = new Dictionary<string, string>
 {
     { "VeeqoClientOptions:BaseUrl", "https://private-anon-4c0cd8afa3-veeqo.apiary-proxy.com/" },
     { "VeeqoClientOptions:ApiKey" , "your-api-key" },
+
+    // Optional per-client override (used when set; otherwise falls back to VeeqoClientOptions)
+    { "VeeqoProductsClientOptions:BaseUrl", "" },
+    { "VeeqoProductsClientOptions:ApiKey", "" },
 };
 
 var configBuilder = new ConfigurationBuilder().AddInMemoryCollection(dic);
@@ -45,7 +49,7 @@ services.AddSingleton<IConfiguration>(config);
 services.AddVeeqoProductsClient();
 
 var serviceProvider = services.BuildServiceProvider();
-var veeqoProductsClient = sp.GetRequiredService<IVeeqoProductsClient>();
+var veeqoProductsClient = serviceProvider.GetRequiredService<IVeeqoProductsClient>();
 
 // Act
 var result = await veeqoProductsClient.ListProductsAsync(new GetProductsParameters() { Page_Size = pageSize });
@@ -88,7 +92,16 @@ var deleteResult = await veeqoProductsClient.DeleteProductAsync(createdProduct.D
 
 ## Authentication
 
-To use the Veeqo API, you need to obtain an API key from your Veeqo account. Once you have the key, configure the `VeeqoClientOptions` with your API key as shown in the example above.
+To use the Veeqo API, you need to obtain an API key from your Veeqo account.
+
+### Options pattern
+
+This client supports the following configuration pattern:
+
+- Base/shared options: `VeeqoClientOptions` (`VeeqoClientOptions:BaseUrl`, `VeeqoClientOptions:ApiKey`)
+- Per-client override options: `VeeqoProductsClientOptions` (`VeeqoProductsClientOptions:BaseUrl`, `VeeqoProductsClientOptions:ApiKey`)
+
+If a per-client option value is missing/empty, the client falls back to the base `VeeqoClientOptions` value.
 
 ## Endpoints
 
