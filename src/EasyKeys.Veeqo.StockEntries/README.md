@@ -109,18 +109,6 @@ Response models represent the structure of the data returned by the Veeqo API. F
 
 Parameter models are used to filter and paginate the results when retrieving data from the API. For example, `GetOrdersParameters` allows you to specify various criteria such as date range, status, and pagination options to refine the results returned by the API. These models are located in the `Models/Parameters` folder.
 
-## Contributing
-
-Contributions are welcome! Please fork this repository and submit a pull request for any enhancements or bug fixes.
-
-### Steps to Contribute
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Create a new Pull Request.
 
 ## License
 
