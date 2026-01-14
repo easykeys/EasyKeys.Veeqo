@@ -24,20 +24,72 @@ jobs:
         with:
             fetch-depth: 0
 
-      - name: Install net8.0
+      - name: Install .NET 10
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             6.0.x
             7.0.x
             8.0.x
+            10.0.x
           include-prerelease: true
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ env.solution }}
 
+      # ---------- LINT & AUTO-FIX ----------
+      - name: Run dotnet format (apply fixes)
+        id: lint
+        run: |
+          dotnet format ${{ env.solution }} --severity error > lint-result.txt || true
+          cat lint-result.txt
+
+      # ---------- CHECK FOR CHANGES ----------
+      - name: Check for formatting changes
+        id: changes
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      # ---------- COMMIT & PUSH FIXES ----------
+      - name: Commit lint fixes
+        if: github.event_name == 'pull_request' && steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: apply dotnet format fixes"
+          git push
+
+      # ---------- COMMENT ON PR ----------
+      - name: Comment lint results on PR
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### 🧹 dotnet format results
+
+            **Auto-fixes applied:** `${{ steps.changes.outputs.changed }}`
+
+            <details>
+            <summary>Lint output</summary>
+
+            ```
+            $(cat lint-result.txt)
+            ```
+
+            </details>
+
+      # ---------- BUILD & TEST ----------
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }} --no-restore
+
 
       - name: Test
         run: dotnet test --no-build --verbosity normal
+
