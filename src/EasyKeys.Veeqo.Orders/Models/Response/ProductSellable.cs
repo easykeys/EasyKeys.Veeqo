@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
+
 public class ProductSellable
 {
     [JsonPropertyName("id")]

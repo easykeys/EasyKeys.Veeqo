@@ -2,6 +2,7 @@ using EasyKeys.Veeqo.BulkTagging;
 using EasyKeys.Veeqo.LineItems;
 using EasyKeys.Veeqo.Orders;
 using EasyKeys.Veeqo.Products;
+using EasyKeys.Veeqo.Rates;
 using EasyKeys.Veeqo.StockEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,7 @@ public static class IntegrationTestBuilder
         services.AddVeeqoStockEntriesClient();
         services.AddVeeqoBulkTaggingClient();
         services.AddVeeqoLineItemsClient();
+        services.AddVeeqoRatesClient();
         return services.BuildServiceProvider();
     }
 

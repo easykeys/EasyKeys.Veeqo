@@ -23,7 +23,7 @@ public class VeeqoOrdersClientTests
         var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
 
         // Act
-        var result = await veeqoOrdersClient.ListOrdersAsync(new GetOrdersParameters() { Page_Size = 1});
+        var result = await veeqoOrdersClient.ListOrdersAsync(new GetOrdersParameters() { Page_Size = 1 });
 
         // veeqo dev doesnt return a list of orders..
 
@@ -124,11 +124,11 @@ public class VeeqoOrdersClientTests
 
         Assert.True(updatedOrder.Success);
 
-        var deletedOrder = await veeqoOrdersClient.CreateOrderNotesAsync(1,"test order notes");
+        var deletedOrder = await veeqoOrdersClient.CreateOrderNotesAsync(1, "test order notes");
 
         Assert.True(deletedOrder.Success);
 
-        var cancelOrder = await veeqoOrdersClient.CancelOrderAsync(new RequestCancelOrder { OrderId = 1, CancelReason = "Just because",SendVeeqoEmail = false });
+        var cancelOrder = await veeqoOrdersClient.CancelOrderAsync(new RequestCancelOrder { OrderId = 1, CancelReason = "Just because", SendVeeqoEmail = false });
 
         Assert.True(cancelOrder.Success);
     }

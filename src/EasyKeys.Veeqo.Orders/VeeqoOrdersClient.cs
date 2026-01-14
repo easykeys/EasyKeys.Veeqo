@@ -5,12 +5,13 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
 namespace EasyKeys.Veeqo.Orders;
+
 public class VeeqoOrdersClient : IVeeqoOrdersClient
 {
     private readonly ILogger<VeeqoOrdersClient> _logger;
     private readonly HttpClient _client;
 
-    public VeeqoOrdersClient(HttpClient client,ILogger<VeeqoOrdersClient> logger)
+    public VeeqoOrdersClient(HttpClient client, ILogger<VeeqoOrdersClient> logger)
     {
         _logger = logger;
         _client = client;
@@ -49,13 +50,13 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             response.EnsureSuccessStatusCode();
 
-            var model = await response.Content.ReadFromJsonAsync<Order>(cancellationToken:cancellationToken);
+            var model = await response.Content.ReadFromJsonAsync<Order>(cancellationToken: cancellationToken);
 
             ArgumentNullException.ThrowIfNull(model, nameof(Order));
 
             return new VeeqoResult<Order>(success: true, data: model);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(CreateOrderAsync));
             return new VeeqoResult<Order>(success: false, error: ex.Message);
@@ -77,7 +78,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             return new VeeqoResult<Order>(success: true, data: response);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(GetOrderAsync));
             return new VeeqoResult<Order>(success: false, error: ex.Message);
@@ -96,7 +97,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             return new VeeqoResult<List<Order>>(success: true, data: models);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(ListOrdersAsync));
             return new VeeqoResult<List<Order>>(success: false, error: ex.Message);
@@ -120,7 +121,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
             return new VeeqoResult<Order>(success: true, data: model);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoOrdersClient} failed", nameof(UpdateOrderAsync));
             return new VeeqoResult<Order>(success: false, error: ex.Message);

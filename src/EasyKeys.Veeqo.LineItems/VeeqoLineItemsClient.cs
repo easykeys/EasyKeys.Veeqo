@@ -21,7 +21,7 @@ public class VeeqoLineItemsClient : IVeeqoLineItemsClient
 
         try
         {
-            var response = await _client.PutAsJsonAsync(endpoint, new RequestLineItemNote() { AdditionalOptions = note}, cancellationToken);
+            var response = await _client.PutAsJsonAsync(endpoint, new RequestLineItemNote() { AdditionalOptions = note }, cancellationToken);
 
             response.EnsureSuccessStatusCode();
 

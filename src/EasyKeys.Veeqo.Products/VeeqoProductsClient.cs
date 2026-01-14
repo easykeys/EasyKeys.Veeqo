@@ -60,7 +60,7 @@ public class VeeqoProductsClient : IVeeqoProductsClient
         catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoClientMethod} failed.", nameof(DeleteProductAsync));
-            return new VeeqoResult<int>(success: false, error: ex.Message); 
+            return new VeeqoResult<int>(success: false, error: ex.Message);
         }
 
     }

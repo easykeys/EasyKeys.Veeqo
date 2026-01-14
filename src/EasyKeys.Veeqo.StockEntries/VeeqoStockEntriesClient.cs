@@ -25,7 +25,7 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
         try
         {
 
-            var inventoryItem = await _client.GetFromJsonAsync<InventoryItem>(endpoint,cancellationToken);
+            var inventoryItem = await _client.GetFromJsonAsync<InventoryItem>(endpoint, cancellationToken);
 
             ArgumentNullException.ThrowIfNull(inventoryItem, nameof(InventoryItem));
 
@@ -38,7 +38,7 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
         }
     }
 
-    public async Task<VeeqoResult<InventoryItem>> UpdateStockEntryAsync(int sellableId,int warehouseId, RequestStockEntry stockEntry, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<InventoryItem>> UpdateStockEntryAsync(int sellableId, int warehouseId, RequestStockEntry stockEntry, CancellationToken cancellationToken = default)
     {
         var endpoint = $"sellables/{sellableId}/warehouses/{warehouseId}/stock_entry";
 
@@ -49,7 +49,7 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
 
             response.EnsureSuccessStatusCode();
 
-            var inventoryItem = await response.Content.ReadFromJsonAsync<InventoryItem>(cancellationToken:cancellationToken);
+            var inventoryItem = await response.Content.ReadFromJsonAsync<InventoryItem>(cancellationToken: cancellationToken);
 
             ArgumentNullException.ThrowIfNull(inventoryItem, nameof(InventoryItem));
 

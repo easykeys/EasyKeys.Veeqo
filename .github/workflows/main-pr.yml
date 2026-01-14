@@ -1,43 +1,111 @@
-# This is a basic workflow to help you get started with Actions
-
 name: "main PR CI"
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
     branches: [main]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # ---------- CHECKOUT ----------
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-            fetch-depth: 0
+          fetch-depth: 0
 
-      - name: Install net8.0
+      # ---------- SETUP DOTNET ----------
+      - name: Install .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: |
-            6.0.x
-            7.0.x
-            8.0.x
+          dotnet-version: 8.0.x
           include-prerelease: true
 
+      # ---------- RESTORE ----------
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore 
 
+      # ---------- DOTNET FORMAT ----------
+      - name: Run dotnet format (apply fixes)
+        id: lint
+        run: |
+          dotnet format --severity error > lint-result.txt || true
+          cat lint-result.txt
+
+      # ---------- CHECK FOR CHANGES ----------
+      - name: Check for formatting changes
+        id: changes
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      # ---------- CREATE / UPDATE BOT PR ----------
+      - name: Create or update bot PR
+        id: botpr
+        if: |
+          steps.changes.outputs.changed == 'true' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: bot/fixes-pr-${{ github.event.pull_request.number }}
+          base: ${{ github.event.pull_request.head.ref }}
+          commit-message: "chore: apply dotnet format fixes"
+          title: "chore: automated formatting fixes (PR #${{ github.event.pull_request.number }})"
+          body: |
+            🤖 **Automated formatting fixes**
+
+            - `dotnet format` applied
+            - Generated automatically by CI
+            - Safe to merge
+
+            Source PR: #${{ github.event.pull_request.number }}
+          labels: |
+            automated
+            formatting
+
+      # ---------- PREPARE PR COMMENT ----------
+      - name: Prepare PR comment body
+        if: github.event_name == 'pull_request'
+        run: |
+          {
+            echo "### 🧹 dotnet format results"
+            echo
+            echo "**Auto-fixes applied:** \`${{ steps.changes.outputs.changed }}\`"
+            echo
+            echo "**Bot PR:** ${{ steps.botpr.outputs.pull-request-url || 'n/a' }}"
+            echo
+            echo "<details>"
+            echo "<summary>Lint output</summary>"
+            echo
+            if [ -f lint-result.txt ]; then
+              echo '```'
+              cat lint-result.txt
+              echo '```'
+            else
+              echo "_No lint output available_"
+            fi
+            echo
+            echo "</details>"
+          } > pr-comment.md
+
+      # ---------- COMMENT ON ORIGINAL PR ----------
+      - name: Comment on original PR
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: pr-comment.md
+
+      # ---------- BUILD ----------
       - name: Build
         run: dotnet build --no-restore
 
+      # ---------- TEST ----------
       - name: Test
         run: dotnet test --no-build --verbosity normal
