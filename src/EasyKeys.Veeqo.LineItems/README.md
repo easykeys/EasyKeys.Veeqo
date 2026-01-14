@@ -1,6 +1,3 @@
-Got it 👍 — here’s the full updated **README.md** that you can copy-paste directly into your repo:
-
-````markdown
 # Veeqo API Wrapper
 
 ## Overview
@@ -20,7 +17,7 @@ To install the Veeqo API Wrapper, you can add the package reference to your proj
 
 ```xml
 <PackageReference Include="EasyKeys.Veeqo" Version="1.0.0" />
-````
+```
 
 ## Usage
 
@@ -40,6 +37,10 @@ var dic = new Dictionary<string, string>
 {
     { "VeeqoClientOptions:BaseUrl", "https://private-anon-4c0cd8afa3-veeqo.apiary-proxy.com/" },
     { "VeeqoClientOptions:ApiKey" , "your-api-key" },
+
+    // Optional per-client override (used when set; otherwise falls back to VeeqoClientOptions)
+    { "VeeqoLineItemsClientOptions:BaseUrl", "" },
+    { "VeeqoLineItemsClientOptions:ApiKey", "" },
 };
 
 var configBuilder = new ConfigurationBuilder().AddInMemoryCollection(dic);
@@ -64,7 +65,16 @@ var updatedLineItemNote = await veeqoLineItemsClient.UpdateLineItemNotesAsync(12
 
 ## Authentication
 
-To use the Veeqo API, you need to obtain an API key from your Veeqo account. Once you have the key, configure the `VeeqoClientOptions` with your API key as shown in the example above.
+To use the Veeqo API, you need to obtain an API key from your Veeqo account.
+
+### Options pattern
+
+This client supports the following configuration pattern:
+
+- Base/shared options: `VeeqoClientOptions` (`VeeqoClientOptions:BaseUrl`, `VeeqoClientOptions:ApiKey`)
+- Per-client override options: `VeeqoLineItemsClientOptions` (`VeeqoLineItemsClientOptions:BaseUrl`, `VeeqoLineItemsClientOptions:ApiKey`)
+
+If a per-client option value is missing/empty, the client falls back to the base `VeeqoClientOptions` value.
 
 ## Endpoints
 
@@ -108,3 +118,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact
 
 If you have any questions or suggestions, please feel free to open an issue or contact us directly.
+

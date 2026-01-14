@@ -2,6 +2,7 @@
 using EasyKeys.Veeqo.Orders.Models.Parameters;
 using EasyKeys.Veeqo.Orders.Models.Response;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 
 namespace EasyKeys.Veeqo.IntegrationTests.Orders;
 
@@ -138,6 +139,21 @@ public class VeeqoOrdersClientTests
         var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
 
         var order = await veeqoOrdersClient.GetOrderAsync(1240276692);
+    }
+
+    [RunnableInDebugOnly]
+    public async Task ListOrdersAsync()
+    {
+        var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
+        var orders = await veeqoOrdersClient.ListOrdersAsync(
+        new GetOrdersParameters()
+        {
+            Query = "ek-",
+            Status = "shipped",
+            Updated_At_Min = DateTime.Now.AddMinutes(-5.1),
+            Page_Size = 100
+        });
+
     }
 
 }

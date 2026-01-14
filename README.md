@@ -36,8 +36,21 @@ var services = new ServiceCollection();
 
 var configurationData = new Dictionary<string, string>
 {
+    // Base options (shared fallback)
     { "VeeqoClientOptions:BaseUrl", "https://private-anon-4c0cd8afa3-veeqo.apiary-proxy.com/" },
     { "VeeqoClientOptions:ApiKey" , "your-api-key" },
+
+    // Optional per-client overrides (these are used when set; otherwise the base options are used)
+    { "VeeqoOrdersClientOptions:BaseUrl", "" },
+    { "VeeqoOrdersClientOptions:ApiKey", "" },
+    { "VeeqoProductsClientOptions:BaseUrl", "" },
+    { "VeeqoProductsClientOptions:ApiKey", "" },
+    { "VeeqoStockEntriesClientOptions:BaseUrl", "" },
+    { "VeeqoStockEntriesClientOptions:ApiKey", "" },
+    { "VeeqoBulkTaggingClientOptions:BaseUrl", "" },
+    { "VeeqoBulkTaggingClientOptions:ApiKey", "" },
+    { "VeeqoLineItemsClientOptions:BaseUrl", "" },
+    { "VeeqoLineItemsClientOptions:ApiKey", "" },
 };
 
 var configBuilder = new ConfigurationBuilder().AddInMemoryCollection(configurationData);
@@ -159,7 +172,16 @@ var productsTag = await veeqoBulkTaggingClient.BulkTagProductsAsync(new List<int
 
 ## Authentication
 
-To use the Veeqo API, you need to obtain an API key from your Veeqo account. Once you have the key, configure the `VeeqoClientOptions` with your API key as shown in the example above.
+To use the Veeqo API, you need to obtain an API key from your Veeqo account.
+
+### Options pattern
+
+Each client supports the following configuration pattern:
+
+- Base/shared options: `VeeqoClientOptions` (`VeeqoClientOptions:BaseUrl`, `VeeqoClientOptions:ApiKey`)
+- Per-client override options: `Veeqo{Area}ClientOptions` (example: `VeeqoOrdersClientOptions:BaseUrl`, `VeeqoOrdersClientOptions:ApiKey`)
+
+If a per-client option value is missing/empty, the client falls back to the base `VeeqoClientOptions` value.
 
 ## Models
 
