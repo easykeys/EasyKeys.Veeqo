@@ -30,29 +30,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ${{ env.solution }}
 
-      # ---------- LINT & AUTO-FIX ----------
-      - name: Run dotnet format (apply fixes)
-        id: lint
-        run: |
-          dotnet format ${{ env.solution }} --severity error > lint-result.txt || true
-          cat lint-result.txt
-
-      # ---------- CHECK FOR CHANGES ----------
-      - name: Check for formatting changes
-        id: changes
-        run: |
-          if git status --porcelain | grep .; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-      # ---------- CREATE / UPDATE BOT BRANCH ----------
+      # ---------- CREATE / UPDATE BOT BRANCH (REBASING FIRST) ----------
       - name: Create or update bot fixes branch (rebased)
         id: botbranch
-        if: |
-          github.event.pull_request.head.repo.full_name == github.repository &&
-          steps.changes.outputs.changed == 'true'
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           PR_BRANCH="${{ github.event.pull_request.head.ref }}"
@@ -69,8 +50,25 @@ jobs:
             git checkout -b "$BOT_BRANCH"
           fi
 
-          # Rebase bot branch on top of PR branch
+          # Rebase while working tree is clean
           git rebase "origin/$PR_BRANCH"
+
+      # ---------- LINT & AUTO-FIX ----------
+      - name: Run dotnet format (apply fixes)
+        id: lint
+        run: |
+          dotnet format ${{ env.solution }} --severity error > lint-result.txt || true
+          cat lint-result.txt
+
+      # ---------- CHECK FOR CHANGES ----------
+      - name: Check for formatting changes
+        id: changes
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
 
       # ---------- COMMIT & PUSH ----------
       - name: Commit and push lint fixes
@@ -96,16 +94,14 @@ jobs:
           body: |
             🤖 **Automated formatting fixes**
 
-            This PR was generated automatically by CI:
             - `dotnet format` applied
-            - Branch rebased on latest PR changes
+            - Bot branch rebased on latest PR changes
             - Safe to merge or cherry-pick
 
             Source PR: #${{ github.event.pull_request.number }}
           labels: |
             automated
             formatting
-          draft: false
 
       # ---------- COMMENT ON ORIGINAL PR ----------
       - name: Comment on original PR
