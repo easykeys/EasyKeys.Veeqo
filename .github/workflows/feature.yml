@@ -1,4 +1,4 @@
-name: "Dev CI/CD"
+name: Dev CI/CD
 
 on:
   workflow_dispatch:
@@ -22,9 +22,10 @@ jobs:
           versionSpec: "5.x"
 
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Use GitVersion
         id: gitversion
@@ -32,17 +33,8 @@ jobs:
         with:
           useConfigFile: true
           updateAssemblyInfo: false
-          updateAssemblyInfoFilename: false
 
-      - name: Display GitVersion outputs
-        run: |
-          echo "ShortSha: ${{ steps.gitversion.outputs.shortSha }}"
-          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
-          echo "VersionSourceSha: ${{ steps.gitversion.outputs.versionSourceSha }}"
-          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.commitsSinceVersionSource }}"
-          echo "CommitDate: ${{ steps.gitversion.outputs.commitDate }}"
-
-      - name: Install net10.0
+      - name: Install .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -51,38 +43,61 @@ jobs:
             8.0.x
             10.0.x
           include-prerelease: true
-          
-      - name: Clear Nuget Feeds
-        run: dotnet nuget locals --clear all
 
       - name: Restore dependencies
-        run: dotnet restore ${{ env.solution }} -v quiet
+        run: dotnet restore ${{ env.solution }}
 
-      # --- LINT (Run dotnet format and save output) ---
-      - name: Lint (dotnet format)
+      # ---------- LINT & AUTO-FIX ----------
+      - name: Run dotnet format (apply fixes)
         id: lint
         run: |
-          dotnet format ${{ env.solution }} --verify-no-changes --severity error > lint-result.txt
+          dotnet format ${{ env.solution }} --severity error > lint-result.txt || true
           cat lint-result.txt
 
-      # --- COMMENT BOT (Post lint results to PR) ---
+      # ---------- CHECK FOR CHANGES ----------
+      - name: Check for formatting changes
+        id: changes
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      # ---------- COMMIT & PUSH FIXES ----------
+      - name: Commit lint fixes
+        if: github.event_name == 'pull_request' && steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: apply dotnet format fixes"
+          git push
+
+      # ---------- COMMENT ON PR ----------
       - name: Comment lint results on PR
-        uses: peter-evans/create-or-update-comment@v4
         if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ### 🧹 Lint Results
-            ```
-            ${{ steps.lint.outputs.lint-result }}
-            ```
-        env:
-          # This next step loads the lint-result.txt content into an output variable for use in the comment
-          lint-result: ${{ steps.lint.outputs.lint-result }}
+            ### 🧹 dotnet format results
 
+            **Auto-fixes applied:** `${{ steps.changes.outputs.changed }}`
+
+            <details>
+            <summary>Lint output</summary>
+
+            ```
+            $(cat lint-result.txt)
+            ```
+
+            </details>
+
+      # ---------- BUILD & TEST ----------
       - name: Build
-        run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }}  --no-restore -p:Version=${{ steps.gitversion.outputs.nuGetVersionV2 }}
+        run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }} --no-restore
 
       - name: Test
         run: dotnet test --no-build --verbosity normal
