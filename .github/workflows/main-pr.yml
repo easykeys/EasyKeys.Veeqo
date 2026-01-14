@@ -4,10 +4,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  solution: MySolution.sln
-  configuration: Release
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,13 +24,13 @@ jobs:
 
       # ---------- RESTORE ----------
       - name: Restore dependencies
-        run: dotnet restore ${{ env.solution }}
+        run: dotnet restore 
 
       # ---------- DOTNET FORMAT ----------
       - name: Run dotnet format (apply fixes)
         id: lint
         run: |
-          dotnet format ${{ env.solution }} --severity error > lint-result.txt || true
+          dotnet format --severity error > lint-result.txt || true
           cat lint-result.txt
 
       # ---------- CHECK FOR CHANGES ----------
@@ -108,7 +104,7 @@ jobs:
 
       # ---------- BUILD ----------
       - name: Build
-        run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }} --no-restore
+        run: dotnet build --no-restore
 
       # ---------- TEST ----------
       - name: Test
