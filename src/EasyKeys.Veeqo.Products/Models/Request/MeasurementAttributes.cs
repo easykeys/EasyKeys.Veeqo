@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Products.Models.Request;
+
 public class MeasurementAttributes
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

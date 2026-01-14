@@ -4,6 +4,7 @@ using EasyKeys.Veeqo.Products.Models.Parameters;
 using EasyKeys.Veeqo.Products.Models.Request;
 
 namespace EasyKeys.Veeqo.IntegrationTests.Products;
+
 public class VeeqoProductsClientTests
 {
     private readonly IServiceProvider sp;

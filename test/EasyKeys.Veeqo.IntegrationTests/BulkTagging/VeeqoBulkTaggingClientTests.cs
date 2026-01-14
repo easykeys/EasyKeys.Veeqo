@@ -18,7 +18,7 @@ public class VeeqoBulkTaggingClientTests
     {
         var veeqoBulkTaggingClient = sp.GetRequiredService<IVeeqoBulkTaggingClient>();
 
-        var ordersTag = await veeqoBulkTaggingClient.BulkTagOrdersAsync([1,2,3], [1,3,4]);
+        var ordersTag = await veeqoBulkTaggingClient.BulkTagOrdersAsync([1, 2, 3], [1, 3, 4]);
 
         Assert.True(ordersTag.Success);
 

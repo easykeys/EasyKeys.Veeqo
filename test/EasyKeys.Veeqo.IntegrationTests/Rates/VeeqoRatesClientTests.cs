@@ -62,7 +62,7 @@ public class VeeqoRatesClientTests
 
         Assert.True(result.Success, result.Error);
 
-        foreach(var quote in result.Data.Quotes)
+        foreach (var quote in result.Data.Quotes)
         {
             _output.WriteLine($"{quote.ServiceName}, Total: {quote.TotalCharge} {quote.Currency}, ETA: {quote.DeliveryEstimate.Value.Date.ToString("MM-dd")}");
         }
