@@ -30,8 +30,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ${{ env.solution }}
 
-      # ---------- CREATE / UPDATE BOT BRANCH (REBASING FIRST) ----------
-      - name: Create or update bot fixes branch (rebased)
+      # ---------- CREATE / UPDATE BOT BRANCH ----------
+      - name: Create or update bot fixes branch
         id: botbranch
         if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
@@ -46,12 +46,10 @@ jobs:
           if git show-ref --verify --quiet refs/remotes/origin/$BOT_BRANCH; then
             git checkout "$BOT_BRANCH"
             git pull origin "$BOT_BRANCH"
+            git merge --ff-only "origin/$PR_BRANCH"
           else
-            git checkout -b "$BOT_BRANCH"
+            git checkout -b "$BOT_BRANCH" "origin/$PR_BRANCH"
           fi
-
-          # Rebase on top of PR branch
-          git rebase "origin/$PR_BRANCH"
 
       # ---------- LINT & AUTO-FIX ----------
       - name: Run dotnet format (apply fixes)
@@ -84,7 +82,6 @@ jobs:
       # ---------- CREATE / UPDATE BOT PR ----------
       - name: Create or update bot PR
         id: botpr
-        if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -95,7 +92,7 @@ jobs:
             🤖 **Automated formatting fixes**
 
             - `dotnet format` applied
-            - Bot branch rebased on latest PR changes
+            - Bot branch updated on latest PR changes
             - Safe to merge or cherry-pick
 
             Source PR: #${{ github.event.pull_request.number }}
