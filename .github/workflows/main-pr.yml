@@ -1,30 +1,22 @@
-# This is a basic workflow to help you get started with Actions
-
 name: "main PR CI"
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
     branches: [main]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # ---------- CHECKOUT ----------
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-            fetch-depth: 0
+          fetch-depth: 0
 
-      - name: Install .NET 10
+      # ---------- SETUP DOTNET ----------
+      - name: Install .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -34,6 +26,7 @@ jobs:
             10.0.x
           include-prerelease: true
 
+      # ---------- RESTORE ----------
       - name: Restore dependencies
         run: dotnet restore ${{ env.solution }}
 
@@ -54,18 +47,68 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      # ---------- COMMIT & PUSH FIXES ----------
-      - name: Commit lint fixes
-        if: github.event_name == 'pull_request' && steps.changes.outputs.changed == 'true'
+      # ---------- CREATE / UPDATE BOT BRANCH ----------
+      - name: Create or update bot fixes branch (rebased)
+        id: botbranch
+        if: |
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          steps.changes.outputs.changed == 'true'
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          BOT_BRANCH="bot/fixes-pr-${PR_NUMBER}"
+
+          echo "branch=$BOT_BRANCH" >> $GITHUB_OUTPUT
+
+          git fetch origin "$PR_BRANCH"
+
+          if git show-ref --verify --quiet refs/remotes/origin/$BOT_BRANCH; then
+            git checkout "$BOT_BRANCH"
+            git pull origin "$BOT_BRANCH"
+          else
+            git checkout -b "$BOT_BRANCH"
+          fi
+
+          # Rebase bot branch on top of PR branch
+          git rebase "origin/$PR_BRANCH"
+
+      # ---------- COMMIT & PUSH ----------
+      - name: Commit and push lint fixes
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "chore: apply dotnet format fixes"
-          git push
 
-      # ---------- COMMENT ON PR ----------
-      - name: Comment lint results on PR
+          git add .
+          git commit -m "chore: apply dotnet format fixes" || exit 0
+          git push origin "${{ steps.botbranch.outputs.branch }}" --force-with-lease
+
+      # ---------- CREATE / UPDATE BOT PR ----------
+      - name: Create or update bot PR
+        id: botpr
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.botbranch.outputs.branch }}
+          base: ${{ github.event.pull_request.head.ref }}
+          title: "chore: automated formatting fixes (PR #${{ github.event.pull_request.number }})"
+          body: |
+            🤖 **Automated formatting fixes**
+
+            This PR was generated automatically by CI:
+            - `dotnet format` applied
+            - Branch rebased on latest PR changes
+            - Safe to merge or cherry-pick
+
+            Source PR: #${{ github.event.pull_request.number }}
+          labels: |
+            automated
+            formatting
+          draft: false
+
+      # ---------- COMMENT ON ORIGINAL PR ----------
+      - name: Comment on original PR
         if: github.event_name == 'pull_request'
         uses: peter-evans/create-or-update-comment@v4
         with:
@@ -76,6 +119,12 @@ jobs:
 
             **Auto-fixes applied:** `${{ steps.changes.outputs.changed }}`
 
+            **Bot branch:**  
+            `${{ steps.botbranch.outputs.branch || 'n/a' }}`
+
+            **Bot PR:**  
+            ${{ steps.botpr.outputs.pull-request-url || 'n/a' }}
+
             <details>
             <summary>Lint output</summary>
 
@@ -85,11 +134,10 @@ jobs:
 
             </details>
 
-      # ---------- BUILD & TEST ----------
+      # ---------- BUILD ----------
       - name: Build
         run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }} --no-restore
 
-
+      # ---------- TEST ----------
       - name: Test
         run: dotnet test --no-build --verbosity normal
-
