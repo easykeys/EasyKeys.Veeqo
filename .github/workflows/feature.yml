@@ -2,8 +2,7 @@ name: Dev CI/CD
 
 on:
   workflow_dispatch:
-  push:
-    branches: [feature/*, release/*]
+
   pull_request:
     branches: [feature/*, release/*]
 
