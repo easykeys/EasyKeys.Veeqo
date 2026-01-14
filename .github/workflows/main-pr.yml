@@ -132,7 +132,7 @@ jobs:
 
       # ---------- BUILD ----------
       - name: Build
-        run: dotnet build ${{ env.solution }} --configuration ${{ env.configuration }} --no-restore
+        run: dotnet build ${{ env.solution }}
 
       # ---------- TEST ----------
       - name: Test
