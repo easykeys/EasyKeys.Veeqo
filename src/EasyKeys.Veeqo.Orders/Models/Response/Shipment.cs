@@ -1,10 +1,12 @@
 ﻿using System.Text.Json.Serialization;
+using EasyKeys.Veeqo.Abstractions.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
 public class Shipment
 {
     [JsonPropertyName("charges")]
+    [JsonConverter(typeof(SingleOrArrayJsonConverter<Charge>))]
     public List<Charge> Charges { get; set; } = new List<Charge>();
 
     [JsonPropertyName("service_type")]
