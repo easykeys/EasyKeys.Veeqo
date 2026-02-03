@@ -15,4 +15,7 @@ public class VeeqoLineItem
 
     [JsonPropertyName("price_per_unit")]
     public decimal PricePerUnit { get; set; }
+
+    [JsonPropertyName("additional_options")]
+    public string AdditionalOptions { get; set; } = string.Empty;
 }

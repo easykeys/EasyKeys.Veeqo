@@ -138,7 +138,9 @@ public class VeeqoOrdersClientTests
     {
         var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
 
-        var order = await veeqoOrdersClient.GetOrderAsync(1240276692);
+        var order = await veeqoOrdersClient.GetOrderAsync(1395192345);
+
+        Assert.NotNull(order);
     }
 
     [RunnableInDebugOnly]
