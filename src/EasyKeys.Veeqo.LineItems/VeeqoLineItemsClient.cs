@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Response;
+using EasyKeys.Veeqo.Abstractions.Response;
 using EasyKeys.Veeqo.LineItems.Models;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
@@ -15,7 +15,7 @@ public class VeeqoLineItemsClient : IVeeqoLineItemsClient
         _logger = logger;
         _client = client;
     }
-    public async Task<VeeqoResult<bool>> UpdateLineItemNotesAsync(int lineItemId, string note, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<bool>> UpdateLineItemNotesAsync(long lineItemId, string note, CancellationToken cancellationToken = default)
     {
         var endpoint = $"line_items/{lineItemId}";
 

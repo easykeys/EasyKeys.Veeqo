@@ -1,4 +1,4 @@
-﻿
+
 
 using EasyKeys.Veeqo.Abstractions.Response;
 using Microsoft.Extensions.Logging;
@@ -18,7 +18,7 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
         _logger = logger;
     }
 
-    public async Task<VeeqoResult<int>> BulkTagOrdersAsync(int[] orderIds, int[] tagIds, bool remove = false, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<long>> BulkTagOrdersAsync(long[] orderIds, long[] tagIds, bool remove = false, CancellationToken cancellationToken = default)
     {
         var endpoint = $"/bulk_tagging";
 
@@ -42,17 +42,17 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
 
             response.EnsureSuccessStatusCode();
 
-            return new VeeqoResult<int>(success: true, data: (int)response.StatusCode);
+            return new VeeqoResult<long>(success: true, data: (long)response.StatusCode);
 
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoClientMethod} failed.", nameof(BulkTagOrdersAsync));
-            return new VeeqoResult<int>(success: false, error: ex.Message);
+            return new VeeqoResult<long>(success: false, error: ex.Message);
         }
     }
 
-    public async Task<VeeqoResult<int>> BulkTagProductsAsync(int[] productIds, int[] tagIds, bool remove, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<long>> BulkTagProductsAsync(long[] productIds, long[] tagIds, bool remove, CancellationToken cancellationToken = default)
     {
         var endpoint = $"bulk_tagging";
 
@@ -76,14 +76,14 @@ public class VeeqoBulkTaggingClient : IVeeqoBulkTaggingClient
 
             response.EnsureSuccessStatusCode();
 
-            return new VeeqoResult<int>(success: true, data: (int)response.StatusCode);
+            return new VeeqoResult<long>(success: true, data: (long)response.StatusCode);
 
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoClientMethod} failed.", nameof(BulkTagProductsAsync));
 
-            return new VeeqoResult<int>(success: false, error: ex.Message);
+            return new VeeqoResult<long>(success: false, error: ex.Message);
         }
 
     }

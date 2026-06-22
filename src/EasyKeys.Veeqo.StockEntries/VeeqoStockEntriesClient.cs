@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Response;
+using EasyKeys.Veeqo.Abstractions.Response;
 using EasyKeys.Veeqo.StockEntries.Models.Request;
 using EasyKeys.Veeqo.StockEntries.Models.Response;
 using Microsoft.Extensions.Logging;
@@ -18,7 +18,7 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
         _client = httpClient;
     }
 
-    public async Task<VeeqoResult<InventoryItem>> ShowStockEntryAsync(int sellableId, int warehouseId, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<InventoryItem>> ShowStockEntryAsync(long sellableId, long warehouseId, CancellationToken cancellationToken = default)
     {
         var endpoint = $"sellables/{sellableId}/warehouses/{warehouseId}/stock_entry";
 
@@ -38,7 +38,7 @@ public class VeeqoStockEntriesClient : IVeeqoStockEntriesClient
         }
     }
 
-    public async Task<VeeqoResult<InventoryItem>> UpdateStockEntryAsync(int sellableId, int warehouseId, RequestStockEntry stockEntry, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<InventoryItem>> UpdateStockEntryAsync(long sellableId, long warehouseId, RequestStockEntry stockEntry, CancellationToken cancellationToken = default)
     {
         var endpoint = $"sellables/{sellableId}/warehouses/{warehouseId}/stock_entry";
 

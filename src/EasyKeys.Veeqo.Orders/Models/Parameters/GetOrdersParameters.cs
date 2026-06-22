@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Request;
+using EasyKeys.Veeqo.Abstractions.Request;
 
 namespace EasyKeys.Veeqo.Orders.Models.Parameters;
 
@@ -7,9 +7,9 @@ public class GetOrdersParameters : VeeqoParameter
 {
     public override string Endpoint => "orders";
 
-    public int? Since_Id
+    public long? Since_Id
     {
-        get => int.Parse(_dictionary[nameof(Since_Id).ToLower()]);
+        get => long.Parse(_dictionary[nameof(Since_Id).ToLower()]);
         set => _dictionary[nameof(Since_Id).ToLower()] = value.ToString();
     }
 
@@ -25,15 +25,15 @@ public class GetOrdersParameters : VeeqoParameter
         set => _dictionary[nameof(Updated_At_Min).ToLower()] = value?.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
-    public int? Page_Size
+    public long? Page_Size
     {
-        get => int.Parse(_dictionary[nameof(Page_Size)]);
+        get => long.Parse(_dictionary[nameof(Page_Size)]);
         set => _dictionary[nameof(Page_Size).ToLower()] = value?.ToString();
     }
 
-    public int? Page
+    public long? Page
     {
-        get => int.Parse(_dictionary.GetValueOrDefault(nameof(Page).ToLower()) ?? "0");
+        get => long.Parse(_dictionary.GetValueOrDefault(nameof(Page).ToLower()) ?? "0");
         set => _dictionary[nameof(Page).ToLower()] = value?.ToString();
     }
 
@@ -55,9 +55,9 @@ public class GetOrdersParameters : VeeqoParameter
         set => _dictionary[nameof(Tags).ToLower()] = value;
     }
 
-    public int? Allocated_At
+    public long? Allocated_At
     {
-        get => int.Parse(_dictionary[nameof(Allocated_At)]);
+        get => long.Parse(_dictionary[nameof(Allocated_At)]);
         set => _dictionary[nameof(Allocated_At).ToLower()] = value?.ToString();
     }
 }

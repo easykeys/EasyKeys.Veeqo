@@ -8,7 +8,7 @@ public class ChannelItem
     public string RemoteId { get; set; } = string.Empty;
 
     [JsonPropertyName("quantity")]
-    public int? Quantity { get; set; }
+    public long? Quantity { get; set; }
 
     [JsonPropertyName("value")]
     public string? Value { get; set; }

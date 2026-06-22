@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
@@ -8,14 +8,14 @@ public class Inventory
     public bool? Infinite { get; set; }
 
     [JsonPropertyName("physical_stock_level_at_all_warehouses")]
-    public int? PhysicalStockLevelAtAllWarehouses { get; set; }
+    public long? PhysicalStockLevelAtAllWarehouses { get; set; }
 
     [JsonPropertyName("allocated_stock_level_at_all_warehouses")]
-    public int? AllocatedStockLevelAtAllWarehouses { get; set; }
+    public long? AllocatedStockLevelAtAllWarehouses { get; set; }
 
     [JsonPropertyName("available_stock_level_at_all_warehouses")]
-    public int? AvailableStockLevelAtAllWarehouses { get; set; }
+    public long? AvailableStockLevelAtAllWarehouses { get; set; }
 
     [JsonPropertyName("incoming_stock_level_at_all_warehouses")]
-    public int? IncomingStockLevelAtAllWarehouses { get; set; }
+    public long? IncomingStockLevelAtAllWarehouses { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
@@ -14,13 +14,13 @@ public class LineItem
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("quantity")]
-    public int? Quantity { get; set; }
+    public long? Quantity { get; set; }
 
     [JsonPropertyName("tax_rate")]
     public decimal TaxRate { get; set; }
 
     [JsonPropertyName("sellable_id")]
-    public int SellableId { get; set; }
+    public long SellableId { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("additional_options")]

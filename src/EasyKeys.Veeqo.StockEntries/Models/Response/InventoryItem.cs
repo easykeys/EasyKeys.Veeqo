@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.StockEntries.Models.Response;
 
@@ -6,16 +6,16 @@ namespace EasyKeys.Veeqo.StockEntries.Models.Response;
 public class InventoryItem
 {
     [JsonPropertyName("sellable_id")]
-    public int SellableId { get; set; }
+    public long SellableId { get; set; }
 
     [JsonPropertyName("warehouse_id")]
-    public int WarehouseId { get; set; }
+    public long WarehouseId { get; set; }
 
     [JsonPropertyName("infinite")]
     public bool Infinite { get; set; }
 
     [JsonPropertyName("allocated_stock_level")]
-    public int AllocatedStockLevel { get; set; }
+    public long AllocatedStockLevel { get; set; }
 
     [JsonPropertyName("warehouse")]
     public Warehouse? Warehouse { get; set; }
@@ -31,13 +31,13 @@ public class InventoryItem
     public DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("incoming_stock_level")]
-    public int IncomingStockLevel { get; set; }
+    public long IncomingStockLevel { get; set; }
 
     [JsonPropertyName("physical_stock_level")]
-    public int PhysicalStockLevel { get; set; }
+    public long PhysicalStockLevel { get; set; }
 
     [JsonPropertyName("available_stock_level")]
-    public int AvailableStockLevel { get; set; }
+    public long AvailableStockLevel { get; set; }
 
     [JsonPropertyName("sellable_on_hand_value")]
     public decimal SellableOnHandValue { get; set; }

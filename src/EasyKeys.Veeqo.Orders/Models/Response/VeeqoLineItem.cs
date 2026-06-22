@@ -1,14 +1,14 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
 public class VeeqoLineItem
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [JsonPropertyName("quantity")]
-    public int Quantity { get; set; }
+    public long Quantity { get; set; }
 
     [JsonPropertyName("sellable")]
     public LineItemSellable Sellable { get; set; } = new LineItemSellable();

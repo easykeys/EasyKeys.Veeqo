@@ -1,11 +1,11 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.StockEntries.Models.Response;
 
 public class Warehouse
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }
@@ -37,7 +37,7 @@ public class Warehouse
     public string? InventoryTypeCode { get; set; }
 
     [JsonPropertyName("default_min_reorder")]
-    public int DefaultMinReorder { get; set; }
+    public long DefaultMinReorder { get; set; }
 
     [JsonPropertyName("click_and_collect_enabled")]
     public bool ClickAndCollectEnabled { get; set; }
@@ -47,7 +47,7 @@ public class Warehouse
     public object? ClickAndCollectDays { get; set; }
 
     [JsonPropertyName("created_by_id")]
-    public int CreatedById { get; set; }
+    public long CreatedById { get; set; }
 
     [JsonPropertyName("updated_by_id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

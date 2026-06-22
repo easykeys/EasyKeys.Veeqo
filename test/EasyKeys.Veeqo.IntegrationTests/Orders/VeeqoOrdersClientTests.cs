@@ -138,9 +138,10 @@ public class VeeqoOrdersClientTests
     {
         var veeqoOrdersClient = sp.GetRequiredService<IVeeqoOrdersClient>();
 
-        var order = await veeqoOrdersClient.GetOrderAsync(1395192345);
+        var order = await veeqoOrdersClient.GetOrderAsync(1844066324);
 
         Assert.NotNull(order);
+        Assert.True(order.Success);
     }
 
     [RunnableInDebugOnly]
@@ -155,6 +156,9 @@ public class VeeqoOrdersClientTests
             Updated_At_Min = DateTime.Now.AddMinutes(-5.1),
             Page_Size = 100
         });
+
+        Assert.NotNull(orders);
+        Assert.True(orders.Success);
 
     }
 

@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Response;
+using EasyKeys.Veeqo.Abstractions.Response;
 using EasyKeys.Veeqo.Products.Models.Parameters;
 using EasyKeys.Veeqo.Products.Models.Request;
 using EasyKeys.Veeqo.Products.Models.Response;
@@ -42,7 +42,7 @@ public class VeeqoProductsClient : IVeeqoProductsClient
         }
     }
 
-    public async Task<VeeqoResult<int>> DeleteProductAsync(int productId, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<long>> DeleteProductAsync(long productId, CancellationToken cancellationToken = default)
     {
         var endpoint = $"products/{productId}";
 
@@ -54,13 +54,13 @@ public class VeeqoProductsClient : IVeeqoProductsClient
 
             response.EnsureSuccessStatusCode();
 
-            return new VeeqoResult<int>(success: true, data: (int)response.StatusCode);
+            return new VeeqoResult<long>(success: true, data: (long)response.StatusCode);
 
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "{veeqoClientMethod} failed.", nameof(DeleteProductAsync));
-            return new VeeqoResult<int>(success: false, error: ex.Message);
+            return new VeeqoResult<long>(success: false, error: ex.Message);
         }
 
     }
@@ -83,7 +83,7 @@ public class VeeqoProductsClient : IVeeqoProductsClient
         }
     }
 
-    public async Task<VeeqoResult<ResponseProduct>> UpdateProductAsync(int productId, RequestProduct product, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<ResponseProduct>> UpdateProductAsync(long productId, RequestProduct product, CancellationToken cancellationToken = default)
     {
         try
         {

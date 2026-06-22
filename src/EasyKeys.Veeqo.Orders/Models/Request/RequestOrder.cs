@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
@@ -6,7 +6,7 @@ public class RequestOrder
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyName("channel_id")]
-    public int ChannelId { get; set; }
+    public long ChannelId { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("due_date")]
@@ -30,7 +30,7 @@ public class RequestOrder
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("delivery_method_id")]
-    public int? DeliveryMethodId { get; set; }
+    public long? DeliveryMethodId { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("delivery_cost")]
