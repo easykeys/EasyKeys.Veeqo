@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Response;
+using EasyKeys.Veeqo.Abstractions.Response;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,5 +12,5 @@ namespace EasyKeys.Veeqo.LineItems;
 
 public interface IVeeqoLineItemsClient
 {
-    Task<VeeqoResult<bool>> UpdateLineItemNotesAsync(int lineItemId, string note, CancellationToken cancellationToken = default);
+    Task<VeeqoResult<bool>> UpdateLineItemNotesAsync(long lineItemId, string note, CancellationToken cancellationToken = default);
 }

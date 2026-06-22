@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Request;
+using EasyKeys.Veeqo.Abstractions.Request;
 
 namespace EasyKeys.Veeqo.Products.Models.Parameters;
 
@@ -8,15 +8,15 @@ public class GetProductsParameters : VeeqoParameter
 {
     public override string Endpoint => "products";
 
-    public int? Since_Id
+    public long? Since_Id
     {
-        get => int.Parse(_dictionary[nameof(Since_Id).ToLower()]);
+        get => long.Parse(_dictionary[nameof(Since_Id).ToLower()]);
         set => _dictionary[nameof(Since_Id).ToLower()] = value?.ToString();
     }
 
-    public int? Warehouse_Id
+    public long? Warehouse_Id
     {
-        get => int.Parse(_dictionary[nameof(Warehouse_Id).ToLower()]);
+        get => long.Parse(_dictionary[nameof(Warehouse_Id).ToLower()]);
         set => _dictionary[nameof(Warehouse_Id).ToLower()] = value?.ToString();
     }
 
@@ -32,15 +32,15 @@ public class GetProductsParameters : VeeqoParameter
         set => _dictionary[nameof(Updated_At_Min).ToLower()] = value?.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
-    public int? Page_Size
+    public long? Page_Size
     {
-        get => int.Parse(_dictionary[nameof(Page_Size)]);
+        get => long.Parse(_dictionary[nameof(Page_Size)]);
         set => _dictionary[nameof(Page_Size).ToLower()] = value?.ToString();
     }
 
-    public int? Page
+    public long? Page
     {
-        get => int.Parse(_dictionary.GetValueOrDefault(nameof(Page).ToLower()) ?? "0");
+        get => long.Parse(_dictionary.GetValueOrDefault(nameof(Page).ToLower()) ?? "0");
         set => _dictionary[nameof(Page).ToLower()] = value?.ToString();
     }
 

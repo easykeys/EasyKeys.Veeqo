@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
 public class ActiveChannel
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
 

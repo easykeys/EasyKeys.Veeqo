@@ -47,7 +47,7 @@ public class VeeqoRatesClientTests
             {
                 new()
                 {
-                    Weight = 1.5,
+                    Weight = .1,
                     WeightUnit = "lb",
                     Height = 10,
                     Width = 10,
@@ -64,7 +64,7 @@ public class VeeqoRatesClientTests
 
         foreach (var quote in result.Data.Quotes)
         {
-            _output.WriteLine($"{quote.ServiceName}, Total: {quote.TotalCharge} {quote.Currency}, ETA: {quote.DeliveryEstimate.Value.Date.ToString("MM-dd")}");
+            _output.WriteLine($"{quote.ServiceName}, Total: {quote.TotalCharge} {quote.Currency},ETA: {quote.DeliveryEstimate.Value.Date.ToString("MM-dd")}");
         }
         Assert.NotNull(result.Data);
     }

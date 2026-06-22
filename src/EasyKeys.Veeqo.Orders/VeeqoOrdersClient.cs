@@ -1,4 +1,4 @@
-﻿using EasyKeys.Veeqo.Abstractions.Response;
+using EasyKeys.Veeqo.Abstractions.Response;
 using EasyKeys.Veeqo.Orders.Models.Parameters;
 using EasyKeys.Veeqo.Orders.Models.Response;
 using Microsoft.Extensions.Logging;
@@ -17,7 +17,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
         _client = client;
     }
 
-    public async Task<VeeqoResult<OrderNote>> CreateOrderNotesAsync(int orderId, string text, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<OrderNote>> CreateOrderNotesAsync(long orderId, string text, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders/{orderId}/notes";
         try
@@ -65,7 +65,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
     }
 
-    public async Task<VeeqoResult<Order>> GetOrderAsync(int orderId, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<Order>> GetOrderAsync(long orderId, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders/{orderId}";
 
@@ -105,7 +105,7 @@ public class VeeqoOrdersClient : IVeeqoOrdersClient
 
     }
 
-    public async Task<VeeqoResult<Order>> UpdateOrderAsync(int veeqoOrderId, RequestOrder order, CancellationToken cancellationToken = default)
+    public async Task<VeeqoResult<Order>> UpdateOrderAsync(long veeqoOrderId, RequestOrder order, CancellationToken cancellationToken = default)
     {
         var endpoint = $"orders/{veeqoOrderId}";
 

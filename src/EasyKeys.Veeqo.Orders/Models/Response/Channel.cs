@@ -1,11 +1,11 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
 public class Channel
 {
     [JsonPropertyName("id")]
-    public int? Id { get; set; }
+    public long? Id { get; set; }
 
     [JsonPropertyName("type_code")]
     public string TypeCode { get; set; } = string.Empty;

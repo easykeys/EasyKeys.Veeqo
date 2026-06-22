@@ -1,11 +1,11 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EasyKeys.Veeqo.Orders.Models.Response;
 
 public class ProductSellable
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [JsonPropertyName("sku_code")]
     public string Sku { get; set; } = string.Empty;
